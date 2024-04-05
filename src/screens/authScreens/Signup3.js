@@ -12,10 +12,10 @@ import Toast from 'react-native-toast-message';
 
 
 const Signup3 = ({ route, navigation }) => {
-    // console.log('routes', route.params.userData)
+    // console.log('routes', route.params.userData) 
     const userData = route.params.userData
     const [mySelected, setMySelected] = useState([]);
-    const [isLoadign, setisLoading] = useState(false);
+    const [isLoading, setisLoading] = useState(false);
     const showToast = (type, message) => {
         Toast.show({
             type: type,
@@ -23,12 +23,15 @@ const Signup3 = ({ route, navigation }) => {
         });
     }
     const HandleSignUp = () => {
+        setisLoading(true)
         let data = new FormData();
         data.append('name', userData.name);
         data.append('email', userData.email);
         data.append('password', userData.password);
         data.append('dob', JSON.stringify(userData.dob));
         data.append('country', userData.country);
+        data.append('phone', userData.phone);
+        data.append('occupation', userData.occupation);
         data.append('gender', userData.gender);
         data.append('about', userData.bio);
         data.append('interests', JSON.stringify(mySelected));
@@ -60,17 +63,28 @@ const Signup3 = ({ route, navigation }) => {
         // console.log('interests', mySelected)
         // console.log('image', userData.pic.path)
         // console.log('imagetype', userData.pic.mime)
-        axios.request(config)
-            .then((response) => {
-                console.log("data", JSON.stringify(response.data));
-                showToast('success', 'Registeration Successful')
-                navigation.navigate('Login')
-            })
-            .catch((error) => {
-                showToast('error', error.message)
+        if (mySelected.length > 0) {
+            axios.request(config)
+                .then((response) => {
+                    setisLoading(false)
 
-                console.log(error);
-            });
+                    console.log("data", JSON.stringify(response.data));
+                    showToast('success', 'Registeration Successful')
+                    navigation.navigate('Login')
+                })
+                .catch((error) => {
+                    setisLoading(false)
+
+                    showToast('error', error.message)
+
+                    console.log(error);
+                });
+        } else {
+            setisLoading(false)
+
+            return showToast('error', 'Plz Choose Your Interests')
+        }
+
 
         // navigation.navigate("MainStack")
     }
@@ -185,11 +199,11 @@ const Signup3 = ({ route, navigation }) => {
                     {InterestsMapp()}
                 </Card>
                 {
-                    isLoadign ?
+                    isLoading ?
                         <Card style={{ paddingTop: hp('10%') }}>
                             <View style={{ backgroundColor: 'transparent' }} onPress={() => { HandleSignUp() }}>
                                 <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['red', 'orange']} style={styles.buttonStyle}>
-                                    <ActivityIndicator color={"white"} size={'large'} />
+                                    <ActivityIndicator color={"black"} size={'large'} />
                                 </LinearGradient>
                             </View>
                         </Card> :

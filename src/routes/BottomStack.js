@@ -1,5 +1,4 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import LikedPeople from '../screens/mainScreens/LikedPeople';
 import Profile from '../screens/mainScreens/Profile';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -8,6 +7,7 @@ import Home from '../screens/mainScreens/Home';
 import { View } from 'react-native';
 import Chat from '../screens/mainScreens/ChatList';
 import Map from '../screens/mainScreens/Map';
+import Notifications from '../screens/mainScreens/Notifications';
 
 const Tab = createBottomTabNavigator();
 
@@ -34,8 +34,8 @@ function BottomStack() {
           ),
           tabBarShowLabel: false,
         })}
-        name='LikedPeople'
-        component={LikedPeople}
+        name='Notifications'
+        component={Notifications}
       />
       <Tab.Screen
         options={({ route }) => ({

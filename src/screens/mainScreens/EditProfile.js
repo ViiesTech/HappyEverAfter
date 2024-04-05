@@ -5,12 +5,13 @@ import { useDispatch, useSelector } from 'react-redux'
 import axios from 'axios'
 import ImagePicker from 'react-native-image-crop-picker'
 import { userDetails } from '../../redux/Slices'
+import Toast from 'react-native-toast-message'
 
 const EditProfile = ({ navigation }) => {
   const dispatch = useDispatch()
   const [loading, setIsLoading] = useState(false)
   const details = useSelector(state => state.user.user)
-  // console.log('details')
+  console.log('details', details)
   const [form, setForm] = useState({
     name: '',
     country: '',
@@ -34,7 +35,15 @@ const EditProfile = ({ navigation }) => {
       setMyProfileImage(image)
     })
   }
-
+  const showToast = (type, message) => {
+    Toast.show({
+      type: type,
+      text1: message,
+    });
+  };
+  useEffect(() => {
+    console.log('token', details.token)
+  }, [])
   const handleEditProfile = () => {
     setIsLoading(true)
 
@@ -46,9 +55,9 @@ const EditProfile = ({ navigation }) => {
     data.append('country', form.country);
     data.append('phone', form.phone);
     data.append('updateImage', {
-      uri: myProfileImage.path,
+      uri: myProfileImage?.path,
       name: 'Profile',
-      type: myProfileImage.mime
+      type: myProfileImage?.mime
     });
 
     let config = {
@@ -61,21 +70,27 @@ const EditProfile = ({ navigation }) => {
       },
       data: data
     };
+    if (myProfileImage && form.name && form.phone && form.country) {
 
-    axios.request(config)
-      .then((response) => {
-        setIsLoading(false)
-        console.log(JSON.stringify(response.data));
-        // if (myProfileImage) {
-        //   dispatch(userDetails({ image: myProfileImage.path }));
+      axios.request(config)
+        .then((response) => {
+          setIsLoading(false)
+          console.log(JSON.stringify(response.data));
+          if (myProfileImage) {
+            dispatch(userDetails({ ...response.data.data, token: details.token }));
 
-        // }
-      })
-      .catch((error) => {
-        setIsLoading(false)
+          }
+          showToast('success', response.data.message)
+        })
+        .catch((error) => {
+          setIsLoading(false)
 
-        console.log(error);
-      });
+          console.log(error);
+        });
+    } else {
+      setIsLoading(false)
+      return showToast('error', 'Plz Fill The Required Fields')
+    }
 
   }
   return (
@@ -123,7 +138,7 @@ const EditProfile = ({ navigation }) => {
       <View style={{ width: '100%', alignItems: 'center' }}>
         <View style={{ marginTop: 30 }}>
           <Text>Your Name</Text>
-          <TextInput onChangeText={changedText => onChangeText(changedText, 'name')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder={details.email}
+          <TextInput onChangeText={changedText => onChangeText(changedText, 'name')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder={details.name}
             placeholderTextColor={'gray'}
           />
         </View>
@@ -132,14 +147,15 @@ const EditProfile = ({ navigation }) => {
 
         <View style={{ marginTop: 20 }}>
           <Text>Your Phone</Text>
-          <TextInput onChangeText={changedText => onChangeText(changedText, 'phone')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder='+1 415-111-000'
+          <TextInput onChangeText={changedText => onChangeText(changedText, 'phone')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder={details.phone ? details.phone : '- - - - - - '}
             placeholderTextColor={'gray'}
           />
         </View>
 
         <View style={{ marginTop: 20 }}>
           <Text>Your Country</Text>
-          <TextInput onChangeText={changedText => onChangeText(changedText, 'country')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder={details.country}
+          <TextInput onChangeText={changedText => onChangeText(changedText, 'country')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }}
+            placeholder={details.country ? details.country : '- - - - - -'}
             placeholderTextColor={'gray'}
           />
         </View>

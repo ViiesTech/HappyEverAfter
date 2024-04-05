@@ -1,142 +1,124 @@
-import { Text, View, TouchableOpacity, Image, FlatList } from 'react-native'
-import React, { useEffect, useState, } from 'react'
+import { Text, View, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import UserCard from '../../Components/UserCard';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import AntDesign from 'react-native-vector-icons/AntDesign'
-import Entypo from 'react-native-vector-icons/Entypo'
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
-import Modal from "react-native-modal";
-import Cross from 'react-native-vector-icons/Entypo'
 import { useSelector } from 'react-redux';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
 
-const Home = ({ navigation }) => {
-    const [modalVisible, setModalVisible] = useState(true)
+const Home = ({ navigation, route }) => {
     const userDetails = useSelector(state => state.user.user)
-    useEffect(()=>{
-console.log('redux user', userDetails)
-    },[])
-    console.log('userdetailsss', userDetails.image)
-    const [allUsers, setAllUsers] = useState([
-        { uid: 1, withSticker: require('../../assets/images/backgroun1.png'), name: "James" },
-        { uid: 2, withSticker: require('../../assets/images/background8.png'), name: "Michael" },
-        { uid: 3, withSticker: require('../../assets/images/background9.png'), name: "Alexa" },
-        { uid: 4, withSticker: require('../../assets/images/backgroun1.png'), name: "Perry" },
-        { uid: 5, withSticker: require('../../assets/images/backgroun1.png'), name: "Johnson" },
-        { uid: 6, withSticker: require('../../assets/images/backgroun1.png'), name: "Ferry" },
-        { uid: 7, withSticker: require('../../assets/images/backgroun1.png'), name: "John" },
-        { uid: 8, withSticker: require('../../assets/images/backgroun1.png'), name: "Franklin" },
-        { uid: 9, withSticker: require('../../assets/images/backgroun1.png'), name: "Sam" }
-    ]);
-    const onSwipe = (direction, uid) => {
-        console.log("direction", direction + 1)
+    console.log('userdetails', userDetails)
+    const [isLoading, setIsLoading] = useState(false)
+    const userId = userDetails._id
+    const [allUsers, setAllUsers] = useState([]);
+    const [showNoUsers, setNoUsers] = useState(false)
 
-    }
-    const data = [
-        {
-            id: 1,
-            name: 'USA'
-        },
-        {
-            id: 2,
-            name: 'England'
-        },
-        {
-            id: 3,
-            name: 'Australia'
-        },
-        {
-            id: 4,
-            name: 'Canada'
-        },
-        {
-            id: 5,
-            name: 'Russia'
-        },
-        {
-            id: 6,
-            name: 'Brazil'
-        },
-        {
-            id: 7,
-            name: 'Phillipine'
-        },
-        {
-            id: 8,
-            name: 'India'
-        },
-        {
-            id: 9,
-            name: 'Argentina'
-        },
-        {
-            id: 10,
-            name: 'Bangladesh'
-        },
-        {
-            id: 11,
-            name: 'Austria'
-        },
-        {
-            id: 12,
-            name: 'Germany'
-        },
-        {
-            id: 13,
-            name: 'France'
-        },
-        {
-            id: 14,
-            name: 'SriLanka'
-        },
-        {
-            id: 15,
-            name: 'China'
-        },
-        {
-            id: 16,
-            name: 'North Korea'
-        },
-        {
-            id: 17,
-            name: 'South Korea'
-        },
-        {
-            id: 18,
-            name: 'Pakistan'
-        },
-        {
-            id: 19,
-            name: 'Hungary'
-        },
-        {
-            id: 20,
-            name: 'Kenya'
-        },
-        {
-            id: 21,
-            name: 'South Africa'
-        },
-        {
-            id: 22,
-            name: 'Afghanistan'
-        },
+    const getAllUsers = () => {
+        setIsLoading(true)
+        let data = '';
 
-    ]
-    const renderItem = ({ item }) => {
-        return (
-            <View style={{ flex: 1 }}>
-                <TouchableOpacity onPress={() => {
-                    setModalVisible(!modalVisible)
-                    navigation.navigate('Suscription')
-                }} style={{ margin: 10 }}>
-                    <Text style={{ color: 'white', fontSize: 18, }}>{item.name}</Text>
-                </TouchableOpacity>
-            </View>
-        )
+        let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: 'https://appsdemo.pro/happyeverafter/user/get-all-users',
+            headers: {
+                'Authorization': `Bearer ${userDetails.token}`
+            },
+            data: data
+        };
+
+        axios.request(config)
+            .then((response) => {
+
+                setIsLoading(false)
+                const data = response.data
+                if (route.params?.country) {
+                    const users = data.message.map((area, index) => {
+                        if (area.country === route.params?.country) {
+                            const imageUrl = `https://appsdemo.pro/happyeverafter/${area.image}`;
+                            const isLiked = checkLiked(area.isLike, userId);
+                            return {
+                                uid: index,
+                                withSticker: { uri: imageUrl },
+                                name: area.name,
+                                _id: area._id,
+                                occupation: area?.occupation,
+                                isLiked: isLiked,
+                                country: area?.country
+                            };
+                        }
+                        return null;
+                    }).filter(user => user !== null);
+                    setAllUsers(users);
+                    console.log("filtered users", users)
+                    {
+                        users.length < 1 &&
+                            showToast('info', `No Users In ${route.params?.country}`)
+                    }
+                }
+                else {
+                    const data = response.data
+                    data.message.map((area, index) => {
+                        const imageUrl = `https://appsdemo.pro/happyeverafter/${area.image}`;
+                        const isLiked = checkLiked(area.isLike, userId);
+                        setAllUsers((prevUsers) => [
+                            ...prevUsers,
+                            {
+                                uid: index,
+                                withSticker: {
+                                    uri: imageUrl,
+                                },
+                                name: area.name,
+                                _id: area._id,
+                                occupation: area?.occupation,
+                                isLiked: isLiked,
+                                country: area?.country
+                            },
+                        ]);
+                    });
+                }
+
+            })
+            .catch((error) => {
+                setIsLoading(false)
+                console.log(error);
+            });
     }
+
+
+    useEffect(() => {
+        setNoUsers(false)
+        console.log('params', route.params);
+        setAllUsers([])
+        getAllUsers()
+    }, [route.params?.stateChange]);
+
+    const showToast = (type, message) => {
+        Toast.show({
+            type: type,
+            text1: message,
+        });
+    };
+
+    const checkLiked = (isLikeArray, userIdToCheck) => {
+        return isLikeArray.includes(userIdToCheck);
+    }
+
+    const onSwipe = (direction) => {
+        allUsers.pop()
+        console.log("users", allUsers)
+        if (allUsers.length < 1) {
+            setNoUsers(true)
+            showToast('info', "User List Finished")
+        }
+        console.log("set user state", showNoUsers)
+    }
+
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, alignItems: 'center', marginTop: hp('20%'), }}>
+            <View style={{ flex: 1, alignItems: 'center', marginTop: hp('20%') }}>
 
                 <View style={{ marginTop: -hp('15%'), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -153,64 +135,32 @@ console.log('redux user', userDetails)
                         />
                     </TouchableOpacity>
                 </View>
-                <Modal isVisible={modalVisible} backdropOpacity={0}>
-                    <View style={{ backgroundColor: 'black', height: 600, borderRadius: 20, width: '100%', padding: 15 }}>
-                        <TouchableOpacity onPress={() => setModalVisible(!modalVisible)} style={{ position: 'absolute', right: 0, padding: 10 }}>
-                            <Cross name='cross' color={'white'} size={30} />
 
-                        </TouchableOpacity>
-                        <View>
-                            <Text style={{ color: 'white', fontSize: 25, fontWeight: 'bold', marginTop: 25, textAlign: 'center' }}>Select A City Name</Text>
-                        </View>
-
-                        <View style={{ marginTop: 20, flex: 1 }}>
-                            <FlatList contentContainerStyle={{ paddingBottom: 10 }} data={data} renderItem={renderItem} />
-                        </View>
+                {isLoading && (
+                    <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                        <ActivityIndicator size={'25'} />
                     </View>
-                </Modal>
+                )}
                 {
-                    allUsers.map((user, index) => {
-                        return (
-                            <View key={index} style={{ position: 'absolute', top: 0 }}  >
-                                <UserCard
-                                    userId={user.uid}
-                                    onSwipe={onSwipe}
-                                    cards={user}
-                                // userData={data}
-                                />
-                            </View>
-                        )
-                    })
+                    showNoUsers &&
+                    (
+                        <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                            <Text style={{ color: 'black', fontSize: 25, gap: 10, }}>Users  List  Finished</Text>
+                        </View>
+                    )
                 }
-
-                <View style={{ flexDirection: 'row', position: 'absolute', bottom: hp('2%'), width: wp('50%'), alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ height: 50, width: 50, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
-                        <Entypo
-                            name={"cross"}
-                            color={'white'}
-                            size={30}
-                        />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ height: 70, width: 70, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
-                        <AntDesign
-                            name={"heart"}
-                            color={'red'}
-                            size={30}
-
-                        />
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={{ height: 50, width: 50, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
-                        <AntDesign
-                            name={"star"}
-                            color={'white'}
-                            size={25}
-
-                        />
-                    </TouchableOpacity>
-
-                </View>
+                {allUsers.map((user, index) => {
+                    return (
+                        <View key={index} style={{ position: 'absolute', top: 0 }}>
+                            <UserCard
+                                userId={user}
+                                onSwipe={onSwipe}
+                                cards={user}
+                            />
+                        </View>
+                    )
+                })
+                }
             </View>
         </View>
     )

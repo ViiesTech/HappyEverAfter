@@ -3,7 +3,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Login from '../screens/authScreens/Login';
 import Signup from '../screens/authScreens/Signup';
 import Home from '../screens/mainScreens/Home';
-import LikedPeople from '../screens/mainScreens/LikedPeople';
+import LikedPeople from '../screens/mainScreens/Notifications';
 import Chat from '../screens/mainScreens/ChatList';
 import Profile from '../screens/mainScreens/Profile';
 import BottomStack from './BottomStack';
@@ -11,6 +11,7 @@ import Subscription from '../screens/mainScreens/Subscription';
 import EditProfile from '../screens/mainScreens/EditProfile';
 import ChatScreen from '../screens/mainScreens/ChatScreen';
 import WhatULooking from '../screens/mainScreens/WhatULooking';
+import ChangePassword from '../screens/mainScreens/ChangePassword';
 const Stack = createNativeStackNavigator()
 
 
@@ -21,6 +22,7 @@ const MainStack = () => {
       <Stack.Screen name='ChatScreen' component={ChatScreen} />
       <Stack.Screen name='Suscription' component={Subscription} />
       <Stack.Screen name='EditProfile' component={EditProfile} />
+      <Stack.Screen name='ChangePassword' component={ChangePassword} />
       <Stack.Screen name='WhatULooking' component={WhatULooking} />
 
 

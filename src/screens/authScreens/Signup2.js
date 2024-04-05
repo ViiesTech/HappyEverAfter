@@ -10,21 +10,26 @@ import {
 } from "react-native-paper";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/Ionicons'
+import Ionicons from 'react-native-vector-icons/Ionicons'
+import Fontisto from 'react-native-vector-icons/Fontisto'
 import DatePicker from 'react-native-date-picker'
 import ImagePicker from 'react-native-image-crop-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Images } from '../../assets/images/Appassets';
+import Toast from 'react-native-toast-message';
+// import { Images } from '../../assets/images/Appassets';
 const SignUp2 = ({ route, navigation }) => {
     const { email, password } = route.params.userData;
     console.log('email,password', email, password)
     const [showDropDown, setShowDropDown] = useState(false);
     const [Name, setName] = useState('')
+    const [phone, setPhone] = useState('')
+    const [occupation, setOccupation] = useState('')
+
     const [male, setMale] = useState(true);
     const [female, setFemale] = useState(false);
     const [gender, setGender] = useState('male');
     const [country, setCountry] = useState(null);
-    const [bio, setBio] = useState('')
+    // const [bio, setBio] = useState('')
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
     const [profileImage, setProfileImage] = useState()
@@ -43,6 +48,13 @@ const SignUp2 = ({ route, navigation }) => {
             value: "Germany",
         },
     ])
+
+    const showToast = (type, message) => {
+        Toast.show({
+            type: type,
+            text1: message,
+        });
+    }
 
     const getAge = (birthday) => { // birthday is a date
         let ageDifMs = Date.now() - birthday.getTime();
@@ -63,16 +75,22 @@ const SignUp2 = ({ route, navigation }) => {
 
     }
     const HandleSignUp = () => {
-
-        navigation.navigate("Signup3", {
-            userData: {
-                email: email, password: password, name: Name, pic: profileImage, dob: date, country: country, gender: gender, bio: bio
-            }
-        })
+        // console.log('phone', phone)
+        // console.log('occupation', occupation)
+        if(profileImage && Name && country  && phone && occupation){
+            navigation.navigate("Signup3", {
+                userData: {
+                    email: email, password: password, name: Name, pic: profileImage, dob: date, country: country, gender: gender, phone: phone, occupation: occupation
+                }
+            })
+        }else{
+            return showToast('error', 'Plz Fill Out The Required Fields')
+        }
+        
     }
 
-    console.log('date', date)
-
+    console.log('occupation', occupation)
+       
     return (
         <ImageBackground style={{ flex: 1 }} source={require('../../assets/images/login.png')}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -80,17 +98,21 @@ const SignUp2 = ({ route, navigation }) => {
                     <ThemeProvider >
                         <StyledContainer>
                             <View style={{ paddingLeft: 15, alignSelf: 'flex-start' }}>
-                                <Icon name='arrow-back' size={26} color="white" onPress={() => navigation.goBack()} />
+                                <Ionicons name='arrow-back' size={26} color="white" onPress={() => navigation.goBack()} />
                             </View>
                             <Card style={styles.input}>
                                 <TextLabel>Select a Profile Picture</TextLabel>
-                                <TouchableOpacity onPress={selectAnImage} style={{ width: wp('90%'), height: hp('30%'), borderRadius: 8, overflow: 'hidden' }}>
+                                <View  style={{ width: wp('85%'), height: hp('25%'), borderRadius: 8, overflow: 'hidden' }}>
                                     {profileImage ? (
-                                        <Image source={{ uri: profileImage.path }} style={{ width: '100%', height: '100%' }} />
+                                        <Image onPress={selectAnImage} source={{ uri: profileImage.path }} style={{ width: '100%', height: '100%' }} />
                                     ) : (
-                                        <View style={{ width: '100%', height: '100%', backgroundColor: 'lightgrey' }} />
+                                        <TouchableOpacity onPress={selectAnImage} style={{ width: '100%',justifyContent:'center',alignItems:'center' ,height: '100%', backgroundColor: 'lightgrey' }}>
+                                            <Fontisto name='picture' color={'black'} size={140}/>
+                                            
+                                        </TouchableOpacity>
+
                                     )}
-                                </TouchableOpacity>
+                                </View>
                             </Card>
                             <Card style={styles.input}>
                                 <TextLabel>Enter your name</TextLabel>
@@ -133,13 +155,32 @@ const SignUp2 = ({ route, navigation }) => {
                                     </StyledButtonTouch>
                                 </LinearGradient>
                             </Card>
-                            <Card style={styles.input}>
+                            {/* <Card style={styles.input}>
                                 <TextLabel>Write about yourself</TextLabel>
                                 <View style={{ width: wp('90%'), alignSelf: 'center', paddingHorizontal: 5, marginTop: 10, backgroundColor: 'lightgrey', borderRadius: 8 }}>
                                     <TextInput value={bio} multiline={true} numberOfLines={6} textAlignVertical={'top'} placeholder={"Write your bio here...."} placeholderTextColor={'grey'} onChangeText={(changedText) => setBio(changedText)} style={{ fontSize: 16, color: 'black' }} />
                                 </View>
 
+                            </Card> */}
+
+                            <Card style={styles.input}>
+                                <TextLabel>Enter your Phone No </TextLabel>
+                                <StyledTextInput placeholder="Phone Number" style={[styles.shadow, styles.inputBorder]}
+                                    value={phone}
+                                    onChangeText={text => setPhone(text)}
+                                />
                             </Card>
+
+
+                            <Card style={styles.input}>
+                                <TextLabel>Enter your occupation</TextLabel>
+                                <StyledTextInput placeholder="Occupation" style={[styles.shadow, styles.inputBorder]}
+                                    value={occupation}
+                                    onChangeText={text => setOccupation(text)}
+                                />
+                            </Card>
+
+
                             <Card style={{ paddingVertical: hp('5%') }}>
                                 <StyledButtonTouch style={{ backgroundColor: 'transparent' }} onPress={() => { HandleSignUp() }}>
                                     <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#FF4500', '#8B0000']} style={styles.buttonStyle}>

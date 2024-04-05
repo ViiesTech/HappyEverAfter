@@ -1,18 +1,25 @@
 import { View, Text, StyleSheet, ScrollView, ImageBackground, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Images } from '../../assets/images/Appassets';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
-import { userDetails, userToken } from '../../redux/Slices';
+import { useDispatch, useSelector } from 'react-redux';
+import { UserLogin, makeLoadingFalse, userDetails, userToken } from '../../redux/Slices';
 import Toast from 'react-native-toast-message';
 
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch()
-  const [isLoading, setIsLoading] = useState(false)
+  const detailssss = useSelector(state => state.user)
+  const isLoading = useSelector(state => state.user.isLoading)
+  useEffect(() => {
+
+    console.log('detailllllsss', detailssss)
+    dispatch(makeLoadingFalse())
+  }, [])
+
   const [passwordVisible, setPasswordVisible] = useState(true);
   const [Message, setMessage] = useState();
   const [form, setForm] = useState({
@@ -32,7 +39,7 @@ const Login = ({ navigation }) => {
     });
   };
   const handleSignIn = () => {
-    setIsLoading(true)
+
     console.log("emailpass", form.email, form.password)
     let data = JSON.stringify({
       "email": form.email,
@@ -49,23 +56,10 @@ const Login = ({ navigation }) => {
       data: data
     };
     if (form.email && form.password) {
-      axios.request(config)
-        .then((response) => {
-          console.log(JSON.stringify(response.data));
-          dispatch(userDetails(response.data.data))
-          dispatch(userToken(response.data.data.token))
-          showToast('success', "Login Successful")
-          setIsLoading(false)
-        })
-        .catch((error) => {
-          setIsLoading(false)
-          showToast('error', error.message)
-
-          console.log("error", error);
-        });
+      dispatch(UserLogin(config))
 
     } else {
-      setIsLoading(false)
+
       return showToast('error', "Plz Fill The Required Fields")
     }
 
@@ -82,6 +76,7 @@ const Login = ({ navigation }) => {
             <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Email</Text>
             <TextInput
               placeholder='Email Address'
+              keyboardType='email-address'
               // secureTextEntry={passwordVisible}
               style={{ marginTop: 10, height: 60, backgroundColor: 'white', borderRadius: 10, marginBottom: 10, padding: 15 }}
               onChangeText={changedText =>

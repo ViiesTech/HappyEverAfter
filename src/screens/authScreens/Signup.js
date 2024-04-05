@@ -8,6 +8,7 @@ import { Images } from '../../assets/images/Appassets';
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import TextInputComp from '../../Components/TextInputComp';
 import { TextInput } from 'react-native-paper';
+import Toast from 'react-native-toast-message';
 
 const SignUp = ({ navigation }) => {
     const [passwordVisible, setPasswordVisible] = useState(true);
@@ -25,7 +26,8 @@ const SignUp = ({ navigation }) => {
     });
 
 
-    const onChangeText = (changedText, key) => {
+    const onChangeText = (changedText, key) => {  
+        console.log('changedText',changedText)
         setForm(oldForm => {
             return { ...oldForm, [key]: changedText };
         });
@@ -36,9 +38,14 @@ const SignUp = ({ navigation }) => {
 
         navigation.navigate("Login")
     }
+ 
 
-
-
+    const showToast = (type, message) => {
+        Toast.show({
+            type: type,  
+            text1: message,
+        });
+    }
 
 
 
@@ -73,9 +80,8 @@ const SignUp = ({ navigation }) => {
                             style={{ width: '100%', height: 35, border: 'none', backgroundColor: 'white', borderRadius: 10, padding: 15 }}
                             placeholder="Enter email address"
                             autoCapitalize='none'
-                            onChangeText={changedText =>
-                                onChangeText(changedText, 'email')
-                            }
+                            keyboardType='email-address'
+                            onChangeText={changedText => onChangeText(changedText, 'email')}
                         />
                     </Card>
                     <Card style={styles.input}>
@@ -123,8 +129,15 @@ const SignUp = ({ navigation }) => {
                             // console.log("email", form.email)
                             // console.log("password", form.password)
                             // {form.email && form.password ? 
-
-                                navigation.navigate('Signup2', { userData: { email: form.email, password: form.password } });
+                            if (form.email && form.password) {
+                                if (form.password.length > 7) {
+                                    navigation.navigate('Signup2', { userData: { email: form.email, password: form.password } });
+                                } else {
+                                    return showToast('error', 'Password Must Be Eight Characters')
+                                }
+                            } else {
+                                return showToast('error', 'Plz Fill Out The Required Fields')
+                            }
                             // }
 
                         }}>

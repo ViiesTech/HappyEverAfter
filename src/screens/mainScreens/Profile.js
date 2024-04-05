@@ -15,7 +15,7 @@ const Profile = ({ navigation }) => {
   const [loading, setIsLoading] = useState(false)
   const details = useSelector(state => state.user.user)
   const token = details.token
-  console.log('token', token)
+  console.log('token', details)
   const showToast = (type, message) => {
     Toast.show({
       type: type,
@@ -38,7 +38,7 @@ const Profile = ({ navigation }) => {
         console.log(JSON.stringify(response.data));
         setIsLoading(false)
         showToast('success', 'Logout Successful')
-        dispatch(userDetails(''))
+        // dispatch(userDetails(''))
         dispatch(clearUserToken())
       })
       .catch((error) => {
@@ -73,13 +73,13 @@ const Profile = ({ navigation }) => {
           </View>
           <View>
             <Text style={{ fontWeight: 'bold', fontSize: 25 }}>{details.name}</Text>
-            <Text style={{ fontSize: 16, color: 'gray' }}>Fashion Model</Text>
+            <Text style={{ fontSize: 16, color: 'gray' }}>{details.occupation}</Text>
           </View>
         </TouchableOpacity>
       </View>
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
         <FeatherIcon name='phone' size={25} color={'gray'} />
-        <Text style={{ color: 'gray', fontSize: 16 }}>42203-87483-443</Text>
+        <Text style={{ color: 'gray', fontSize: 16 }}>{details.phone}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 15 }}>
         <Sms name='email' size={25} color={'gray'} />
@@ -103,9 +103,9 @@ const Profile = ({ navigation }) => {
         <Arrow name='tago' size={25} color={'blue'} />
         <Text style={{ color: '#00008B', fontSize: 16 }}>Promotions</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
+      <TouchableOpacity onPress={() => navigation.navigate('ChangePassword')} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
         <Arrow name='setting' size={25} color={'blue'} />
-        <Text style={{ color: '#00008B', fontSize: 16 }}>Settings</Text>
+        <Text style={{ color: '#00008B', fontSize: 16 }}>Change Password</Text>
       </TouchableOpacity>
       <View style={{ height: 1, width: '100%', marginVertical: 25, backgroundColor: 'gray' }}>
 

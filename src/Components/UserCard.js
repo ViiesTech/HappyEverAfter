@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import TinderCard from 'react-tinder-card';
 import {
   widthPercentageToDP as wp,
@@ -7,31 +7,81 @@ import {
 } from 'react-native-responsive-screen';
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+
+const UserCard = ({ onSwipe, cards, userId, userData }) => {
+  const userDetails = useSelector((state) => state.user.user);
+  // const user_Id = userDetails.id
+  const [like, setLike] = useState()
+  const [lastPressTime, setLastPressTime] = useState(0);
+
+  const cardRef = useRef(null);
+  const handleNotify = (id) => {
+    if (id.isLiked) {
+      id.isLiked = !id.isLiked
+      setLike(false)
+    } else {
+      setLike(!like)
+    }
+
+    // if (id.isLiked) {
+    //   console.log('true condition');
+    //   setLike(!id.isLiked);
+    // } else {
+    //   console.log('false condition');
+    //   setLike(!id.isLiked);
+    // }
 
 
-const UserCard = ({ onSwipe, cards, userData, }) => {
+    let data = '';
 
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `https://appsdemo.pro/happyeverafter/user/like-user/${id._id}`,
+      headers: {
+        'Authorization': `Bearer ${userDetails.token}`,
+      },
+      data: data,
+    };
 
-
-
+    axios
+      .request(config)
+      .then((response) => {
+        console.log('response', JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   return (
     <TinderCard
       className="swipe"
       preventSwipe={['up', 'down']}
       style={styles.tinderCard}
+      flickOnSwipe={true}
       onSwipe={(direction) => {
         onSwipe(direction)
-
       }}
+      ref={cardRef}
     >
       <TouchableOpacity
-        activeOpacity={0.9}
-        style={styles._card}
-        // onPress={() => {
-        //   navigation.navigate('DisCoverProfile', { profileInfo: cards });
-        // }}
-      >
+        onPress={() => {
+          const currentTime = new Date().getTime();
+          const delay = 500; // Adjust the delay time as needed (in milliseconds)
+          if (currentTime - lastPressTime < delay) {
+            // Double press detected, trigger swipe right action
+            // cardRef.current.swipe('right');
+            handleNotify(userId)
+          }
+          setLastPressTime(currentTime);
+        }}
+
+        activeOpacity={0.9} style={styles._card}>
         <FastImage
           style={{
             width: wp('90%'),
@@ -74,17 +124,13 @@ const UserCard = ({ onSwipe, cards, userData, }) => {
           <View style={{ alignSelf: 'center', marginBottom: 30 }}>
             <View style={{ width: wp('70%'), justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
               <View>
-
-                <Text
-                  style={{ fontSize: 26, fontWeight: 'bold', color: 'white' }}>
+                <Text style={{ fontSize: 26, fontWeight: 'bold', color: 'white' }}>
                   {cards?.name}
                 </Text>
-
                 <Text style={{ color: 'white' }}>
-                  Fashion Designer
+                  {cards?.occupation}
                 </Text>
               </View>
-
               <View style={{ padding: 10, borderWidth: 1, borderColor: 'white', paddingVertical: 0, borderRadius: 3 }}>
                 <Text style={{ color: 'white' }}>
                   1 KM
@@ -94,6 +140,57 @@ const UserCard = ({ onSwipe, cards, userData, }) => {
           </View>
         </View>
       </TouchableOpacity>
+
+      <View style={{ flexDirection: 'row', position: 'absolute', bottom: hp('-5%'), width: wp('50%'), alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={() => {
+            // console.log('hello', userData.length -1)
+            
+            cardRef.current.swipe('left')
+          }
+          }
+          style={{ height: 50, width: 50, zIndex: 200, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
+          <Entypo
+            name={'cross'}
+            color={'white'}
+            size={30}
+          />
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.8}
+
+
+          onPress={() => handleNotify(userId)}
+          style={{ height: 70, width: 70, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
+          {userId.isLiked || like ?
+            (
+              <AntDesign
+                name={'heart'}
+                color={'red'}
+                size={30}
+              />
+            ) : (
+              <AntDesign
+                name={'heart'}
+                color={'white'}
+                size={30}
+              />
+            )}
+
+        </TouchableOpacity>
+        <TouchableOpacity
+          activeOpacity={0.7}
+          style={{ height: 50, width: 50, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
+          <AntDesign
+
+
+            name={'star'}
+            color={'white'}
+            size={25}
+          />
+        </TouchableOpacity>
+      </View>
     </TinderCard>
   );
 };
