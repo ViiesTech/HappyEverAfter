@@ -26,8 +26,8 @@ const SignUp = ({ navigation }) => {
     });
 
 
-    const onChangeText = (changedText, key) => {  
-        console.log('changedText',changedText)
+    const onChangeText = (changedText, key) => {
+        console.log('changedText', changedText)
         setForm(oldForm => {
             return { ...oldForm, [key]: changedText };
         });
@@ -38,11 +38,11 @@ const SignUp = ({ navigation }) => {
 
         navigation.navigate("Login")
     }
- 
+
 
     const showToast = (type, message) => {
         Toast.show({
-            type: type,  
+            type: type,
             text1: message,
         });
     }
@@ -53,9 +53,7 @@ const SignUp = ({ navigation }) => {
         <ImageBackground style={{ flex: 1 }} source={require('../../assets/images/login.png')}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <StyledContainer>
-                    {/* <View style={{ alignSelf: 'flex-start', paddingLeft: 15 }}>
-                        <Icon name='arrow-left' size={26} color="white" onPress={() => navigation.navigate('Login')} />
-                    </View> */}
+
                     <HeaderContainer style={styles.headerContainer}>
                         <Text style={{ color: 'red', fontSize: 20, fontWeight: 'bold' }}>Sign up</Text>
                         <TextSmall style={{ color: 'white' }}>STEP 1/3</TextSmall>
@@ -126,9 +124,7 @@ const SignUp = ({ navigation }) => {
                     </View>
                     <Card style={{ paddingTop: hp('5%') }}>
                         <StyledButtonTouch style={{ backgroundColor: 'transparent' }} onPress={() => {
-                            // console.log("email", form.email)
-                            // console.log("password", form.password)
-                            // {form.email && form.password ? 
+
                             if (form.email && form.password) {
                                 if (form.password.length > 7) {
                                     navigation.navigate('Signup2', { userData: { email: form.email, password: form.password } });

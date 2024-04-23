@@ -8,7 +8,6 @@ import Sliders from '../screens/authScreens/Sliders';
 import Signup3 from '../screens/authScreens/Signup3';
 const Stack = createNativeStackNavigator()
 
-
 const AuthStack = () => {
   return (
     <Stack.Navigator initialRouteName='Splash' screenOptions={{ headerShown: false }}>

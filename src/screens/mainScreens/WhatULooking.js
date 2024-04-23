@@ -2,8 +2,43 @@ import { View, Text, TextInput, ScrollView, TouchableOpacity, StyleSheet, ImageB
 import React from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
+import axios from 'axios'
+import { useSelector, useDispatch } from 'react-redux'
+import { baseUrl } from '../../assets/Utils/BaseUrl'
+import { formStatus } from '../../redux/Slices'
 
 const WhatULooking = ({ navigation }) => {
+  const userToken = useSelector(state => state.user.token)
+  const dispatch = useDispatch()
+
+  const handleForm = () => {
+    let data = JSON.stringify({
+      "formStatus": 1
+    });
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/fill-form`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userToken}`
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+        dispatch(formStatus(1))
+        navigation.navigate('BottomStack')
+
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+  }
   return (
     <ImageBackground source={require('../../assets/images/image4.png')}>
       <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 20, fontWeight: '700', color: 'white' }}>What You Are Looking For?</Text>
@@ -65,7 +100,7 @@ const WhatULooking = ({ navigation }) => {
           <TextInput />
         </View>
         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#D23073', '#C22B8D', '#AE24AC', '#9C1EC8']} style={styles.buttonStyle}>
-          <TouchableOpacity onPress={() => navigation.navigate('BottomStack')} style={{ backgroundColor: 'transparent', justifyContent: 'center' }} >
+          <TouchableOpacity onPress={() => handleForm()} style={{ backgroundColor: 'transparent', justifyContent: 'center' }} >
             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#FF4500', '#8B0000']} style={styles.buttonStyle}>
               <Text style={[styles.next, { textAlign: 'center', color: 'white' }]}>Continue</Text>
             </LinearGradient>

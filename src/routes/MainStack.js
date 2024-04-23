@@ -1,33 +1,32 @@
-import React from 'react'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import Login from '../screens/authScreens/Login';
-import Signup from '../screens/authScreens/Signup';
-import Home from '../screens/mainScreens/Home';
-import LikedPeople from '../screens/mainScreens/Notifications';
-import Chat from '../screens/mainScreens/ChatList';
-import Profile from '../screens/mainScreens/Profile';
+import React, { useEffect, useState } from 'react';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import BottomStack from './BottomStack';
 import Subscription from '../screens/mainScreens/Subscription';
 import EditProfile from '../screens/mainScreens/EditProfile';
 import ChatScreen from '../screens/mainScreens/ChatScreen';
 import WhatULooking from '../screens/mainScreens/WhatULooking';
+import messaging from '@react-native-firebase/messaging';
 import ChangePassword from '../screens/mainScreens/ChangePassword';
-const Stack = createNativeStackNavigator()
+import { useSelector } from 'react-redux';
+
+const Stack = createNativeStackNavigator();
+
+const MainStack = ({ navigation }) => {
+  const formStatus = useSelector(state => state.user.formStatus)
+
+  // Add navigation as a dependency
 
 
-const MainStack = () => {
   return (
-    <Stack.Navigator initialRouteName='WhatULooking' screenOptions={{ headerShown: false }}>
+    <Stack.Navigator initialRouteName={'WhatULooking'} screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='WhatULooking' component={WhatULooking} />
       <Stack.Screen name='BottomStack' component={BottomStack} />
       <Stack.Screen name='ChatScreen' component={ChatScreen} />
-      <Stack.Screen name='Suscription' component={Subscription} />
+      <Stack.Screen name='Subscription' component={Subscription} />
       <Stack.Screen name='EditProfile' component={EditProfile} />
       <Stack.Screen name='ChangePassword' component={ChangePassword} />
-      <Stack.Screen name='WhatULooking' component={WhatULooking} />
-
-
     </Stack.Navigator>
-  )
-}
+  );
+};
 
-export default MainStack
+export default MainStack;

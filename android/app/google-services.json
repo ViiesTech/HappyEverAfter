@@ -1,36 +1,26 @@
 {
   "project_info": {
-    "project_number": "1014645140913",
-    "project_id": "new-dating-app-57708",
-    "storage_bucket": "new-dating-app-57708.appspot.com"
+    "project_number": "879924633625",
+    "project_id": "happy-ever-after",
+    "storage_bucket": "happy-ever-after.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1014645140913:android:38a4da5ba5c850bbc2a190",
+        "mobilesdk_app_id": "1:879924633625:android:7dcd57192e906b8ae1ca88",
         "android_client_info": {
-          "package_name": "com.dating__app"
+          "package_name": "com.happyeverafter"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "1014645140913-jch1jgt9k5mhiljdvttgtf51qrm7nk1p.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAKHwIRLmHRahLyFcV0F-gsl8SGiBajHHk"
+          "current_key": "AIzaSyDeALkfcOdrkuRe-2rmSbn-dEpM0hiPtQs"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "1014645140913-jch1jgt9k5mhiljdvttgtf51qrm7nk1p.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
+          "other_platform_oauth_client": []
         }
       }
     }

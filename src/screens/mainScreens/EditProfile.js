@@ -6,6 +6,7 @@ import axios from 'axios'
 import ImagePicker from 'react-native-image-crop-picker'
 import { userDetails } from '../../redux/Slices'
 import Toast from 'react-native-toast-message'
+import { baseUrl } from '../../assets/Utils/BaseUrl'
 
 const EditProfile = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -63,7 +64,7 @@ const EditProfile = ({ navigation }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://appsdemo.pro/happyeverafter/user/profile-edit',
+      url: `${baseUrl}/profile-edit`,
       headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${details.token}`,

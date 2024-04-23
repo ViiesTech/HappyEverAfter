@@ -7,6 +7,7 @@ const initialState = {
     token: '',
     isLoading: false,
     error: null,
+    formStatus: '',
 };
 
 const showToast = (type, message) => {
@@ -51,6 +52,7 @@ export const authSlice = createSlice({
         clearUserToken: (state) => {
             state.token = '';
         },
+
         userDetails: (state, action) => {
             state.user = action.payload;
         },
@@ -59,7 +61,11 @@ export const authSlice = createSlice({
         },
         makeLoadingFalse: (state, action) => {
             state.isLoading = false
-        }
+        },
+        formStatus: (state, action) => {
+            state.formStatus = action.payload
+            // console.log('redux form status', action.payload)
+        },
     },
     extraReducers: (builder) => {
         builder
@@ -71,6 +77,7 @@ export const authSlice = createSlice({
                 state.isLoading = false; // Set isLoading to false when login is successful
                 state.token = action.payload.data.token;
                 state.user = action.payload.data;
+                // state.formStatus = action.payload.fillFormStatus
             })
             .addCase(UserLogin.rejected, (state, action) => {
                 state.isLoading = false; // Set isLoading to false when login fails
@@ -79,6 +86,6 @@ export const authSlice = createSlice({
     },
 });
 
-export const { clearUserToken, userDetails, setError, makeLoadingFalse } = authSlice.actions;
+export const { clearUserToken, userDetails, setError, makeLoadingFalse, formStatus } = authSlice.actions;
 
 export default authSlice.reducer;

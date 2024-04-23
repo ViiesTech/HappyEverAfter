@@ -9,20 +9,46 @@ import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import { ActivityIndicator } from 'react-native';
 import Toast from 'react-native-toast-message';
-
+import { baseUrl } from '../../assets/Utils/BaseUrl';
+import socketServices from '../../../socket/Socket_Service';
+import messaging from '@react-native-firebase/messaging';
 
 const Signup3 = ({ route, navigation }) => {
     // console.log('routes', route.params.userData) 
-    const userData = route.params.userData
+    // const userData = route.params.userData
     const [mySelected, setMySelected] = useState([]);
     const [isLoading, setisLoading] = useState(false);
+    const [fcmToken, setFcmToken] = useState()
+
+    useEffect(() => {
+        const checkToken = async () => {
+            const fcmToken = await messaging().getToken();
+            console.log('fcm')
+            if (fcmToken) {
+                setFcmToken(fcmToken)
+
+                console.log('fcm token', fcmToken);
+
+            }
+        };
+
+        checkToken();
+
+    }, []);
+
     const showToast = (type, message) => {
         Toast.show({
             type: type,
             text1: message,
         });
     }
+    const userData = {
+        ...route.params.userData,
+        pic: route.params.userData.pic ? JSON.parse(route.params.userData.pic) : null,
+        dob: route.params.userData.dob ? new Date(JSON.parse(route.params.userData.dob)) : null,
+    };
     const HandleSignUp = () => {
+        console.log('parsed user data', userData)
         setisLoading(true)
         let data = new FormData();
         data.append('name', userData.name);
@@ -33,7 +59,8 @@ const Signup3 = ({ route, navigation }) => {
         data.append('phone', userData.phone);
         data.append('occupation', userData.occupation);
         data.append('gender', userData.gender);
-        data.append('about', userData.bio);
+        data.append('fcm_token', fcmToken);
+        // data.append('about', userData.bio);
         data.append('interests', JSON.stringify(mySelected));
         data.append('image', {
             uri: userData?.pic?.path,
@@ -44,7 +71,7 @@ const Signup3 = ({ route, navigation }) => {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'https://appsdemo.pro/happyeverafter/user/register',
+            url: `${baseUrl}/register`,
             headers: {
                 'Content-Type': 'multipart/form-data',
                 // 'Authorization': `Bearer ${userToken}`,
@@ -53,16 +80,16 @@ const Signup3 = ({ route, navigation }) => {
             data: data
         };
 
-        // console.log('name',userData.name)
-        // console.log('email',userData.email)
-        // console.log('password',userData.password)
-        // console.log('dob', JSON.stringify(userData.dob), typeof userData.dob)
-        // console.log('country',userData.country)
-        // console.log('gender', userData.gender)
-        // console.log('about',userData.bio)
-        // console.log('interests', mySelected)
-        // console.log('image', userData.pic.path)
-        // console.log('imagetype', userData.pic.mime)
+        console.log('name', userData.name)
+        console.log('email', userData.email)
+        console.log('password', userData.password)
+        console.log('dob', JSON.stringify(userData.dob), typeof userData.dob)
+        console.log('country', userData.country)
+        console.log('gender', userData.gender)
+        console.log('about', userData.bio)
+        console.log('interests', mySelected)
+        console.log('image', userData.pic.path)
+        console.log('imagetype', userData.pic.mime)
         if (mySelected.length > 0) {
             axios.request(config)
                 .then((response) => {
@@ -169,7 +196,6 @@ const Signup3 = ({ route, navigation }) => {
     }
 
     useEffect(() => {
-
         console.log(mySelected)
     }, [mySelected])
     const InterestsMapp = () => {
@@ -188,6 +214,7 @@ const Signup3 = ({ route, navigation }) => {
         });
     };
     return (
+
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <StyledContainer>
                 <View style={{ flexDirection: 'row', width: wp('90%'), justifyContent: 'space-between' }}>

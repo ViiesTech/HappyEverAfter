@@ -1,5 +1,4 @@
 import { Dimensions } from "react-native"
-
 const { width, height } = Dimensions.get('screen')
 
 export const CARD = {
@@ -17,7 +16,5 @@ export const COLORS = {
   red: '#BF0B30',
   yellow: 'yellow'
 }
-
-
 
 export const ACTION_OFFSET = 100;

@@ -1,13 +1,11 @@
-import { View, Text,SafeAreaView,style,TextInput} from 'react-native'
-import React,{useState} from 'react'
+import { SafeAreaView, TextInput } from 'react-native'
+import React, { useState } from 'react'
 import { Provider } from 'react-native-paper'
-import {DropDown} from "react-native-paper-dropdown";
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import { DropDown } from "react-native-paper-dropdown";
 const Dropdown = () => {
     const [showDropDown, setShowDropDown] = useState(true);
     console.log(showDropDown)
     const [Selectlist1, setSelectlist1] = useState('');
-    const [showMultiSelectDropDown, setShowMultiSelectDropDown] = useState(false);
     const list = [
         {
             label: 'a. 2-2-1',

@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
-import Icon from 'react-native-vector-icons/AntDesign';
 import { COLORS } from '../../Components/utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -41,17 +40,13 @@ const Slider = ({ navigation }) => {
                     <Text style={{ fontSize: 16, color: COLORS.white, marginTop: 20 }}>{item.text}</Text>
                     {item.next ? (
 
-
                         <TouchableOpacity style={{ backgroundColor: 'transparent', justifyContent: 'center', borderRadius: 10 }} onPress={() => {
                             sliderRef.current?.goToSlide(slides.length)
                             navigation.navigate('Login')
                         }}>
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#FF4500', '#8B0000']} style={{ borderRadius: 50, marginTop: 20, height: 60, justifyContent: 'center' }}>
-
-
-                                <Text style={[styles.next, { textAlign: 'center', color: 'white',fontWeight:'bold',fontSize:20 }]}>Continue</Text>
+                                <Text style={[styles.next, { textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }]}>Continue</Text>
                             </LinearGradient>
-
                         </TouchableOpacity>
 
                     ) :
@@ -60,14 +55,11 @@ const Slider = ({ navigation }) => {
                             sliderRef.current?.goToSlide(slides.indexOf(item) + 1);
                         }}>
                             <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#FF4500', '#8B0000']} style={{ borderRadius: 50, marginTop: 20, height: 60, justifyContent: 'center' }}>
-
-
-                                <Text style={[styles.next, { textAlign: 'center', color: 'white',fontWeight:'bold',fontSize:20 }]}>Continue</Text>
+                                <Text style={[styles.next, { textAlign: 'center', color: 'white', fontWeight: 'bold', fontSize: 20 }]}>Continue</Text>
                             </LinearGradient>
 
                         </TouchableOpacity>
                     }
-
                 </View>
             </ImageBackground>
         );
@@ -80,7 +72,6 @@ const Slider = ({ navigation }) => {
     }
 
     if (showRealApp) {
-        // Return your real app component here
         return null;
     } else {
         return (

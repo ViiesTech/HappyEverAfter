@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Image, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -8,7 +8,7 @@ import { FlagsData } from './Countries';
 import malaysiaFlag from '../../assets/images/malaysia.png';
 
 Geocoder.init('AIzaSyCxPKJMEW5ko5BoDLW5F3K4bzs-faQaHU8');
-
+ 
 
 const Map = ({ navigation }) => {
     const [currentRegion, setCurrentRegion] = useState(null);
@@ -56,14 +56,14 @@ const Map = ({ navigation }) => {
                         key={index}
                         coordinate={{ latitude: area?.latitude, longitude: area?.longitude }}
                         onPress={() => {
-                            setStateChange(!stateChange)
+                            setStateChange(!stateChange);
                             navigation.navigate('Home', { country: area?.name, stateChange: stateChange });
                             console.log('area', area?.name);
                         }}
                         icon={area?.images}
-                    // {/* <Image  source={area?.images} style={{height:10,width:10}}/> */}
-                    // </Marker>
                     />
+
+
                 ))}
 
             </MapView>

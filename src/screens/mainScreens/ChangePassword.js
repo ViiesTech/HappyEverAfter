@@ -4,6 +4,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
 import { useSelector } from 'react-redux'
 import Toast from 'react-native-toast-message'
+import { baseUrl } from '../../assets/Utils/BaseUrl'
 
 const ChangePassword = ({ navigation }) => {
     const [isloading, setIsLoading] = useState(false)
@@ -37,7 +38,7 @@ const ChangePassword = ({ navigation }) => {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: 'https://appsdemo.pro/happyeverafter/user/update-password',
+            url: `${baseUrl}/update-password`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${userDetails.token}`
@@ -45,23 +46,19 @@ const ChangePassword = ({ navigation }) => {
             data: data
         };
         if (form.currPass && form.newPass && form.confirmNewPass) {
-
             axios.request(config)
                 .then((response) => {
                     setIsLoading(false)
                     if (response.data.success) {
                         showToast('success', response.data.message)
-
                     } else {
                         showToast('error', response.data.message)
-
                     }
                     console.log(".then response", JSON.stringify(response.data));
                 })
                 .catch((error) => {
                     setIsLoading(false)
                     showToast('error', error.message)
-
                     console.log(".catch response", error);
                 });
         } else {
@@ -94,7 +91,7 @@ const ChangePassword = ({ navigation }) => {
                 </View>
 
             </View>
-            <TouchableOpacity onPress={handleChangePassword} style={{ marginTop: 40,justifyContent:'center' ,backgroundColor: '#007bff', borderRadius: 15, width: '100%', alignItems: 'center',height:60}}>
+            <TouchableOpacity onPress={handleChangePassword} style={{ marginTop: 40, justifyContent: 'center', backgroundColor: '#007bff', borderRadius: 15, width: '100%', alignItems: 'center', height: 60 }}>
                 {
                     isloading ? (
                         <ActivityIndicator color={'white'} size={'large'} />

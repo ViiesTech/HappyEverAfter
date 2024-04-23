@@ -1,21 +1,34 @@
 import { View, Text, StyleSheet, ScrollView, ImageBackground, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
-import { Images } from '../../assets/images/Appassets';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/Entypo';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserLogin, makeLoadingFalse, userDetails, userToken } from '../../redux/Slices';
+import { UserLogin, makeLoadingFalse } from '../../redux/Slices';
 import Toast from 'react-native-toast-message';
-
+import { baseUrl } from '../../assets/Utils/BaseUrl';
+import messaging from '@react-native-firebase/messaging';
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch()
   const detailssss = useSelector(state => state.user)
   const isLoading = useSelector(state => state.user.isLoading)
-  useEffect(() => {
+  const [fcmToken, setFcmToken] = useState()
 
+  useEffect(() => {
+    const checkToken = async () => {
+      const fcmToken = await messaging().getToken();
+      console.log('fcm')
+      if (fcmToken) {
+        setFcmToken(fcmToken)
+
+        console.log('fcm token', fcmToken);
+
+      }
+    };
+    checkToken();
+  }, []);
+  useEffect(() => {
     console.log('detailllllsss', detailssss)
     dispatch(makeLoadingFalse())
   }, [])
@@ -43,13 +56,14 @@ const Login = ({ navigation }) => {
     console.log("emailpass", form.email, form.password)
     let data = JSON.stringify({
       "email": form.email,
-      "password": form.password
+      "password": form.password,
+      "fcm_token": fcmToken
     });
 
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://appsdemo.pro/happyeverafter/user/login',
+      url: `${baseUrl}/login`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -61,9 +75,8 @@ const Login = ({ navigation }) => {
     } else {
 
       return showToast('error', "Plz Fill The Required Fields")
-    }
 
-    // navigation.navigate('MainStack')
+    }
   }
 
   return (
@@ -77,7 +90,6 @@ const Login = ({ navigation }) => {
             <TextInput
               placeholder='Email Address'
               keyboardType='email-address'
-              // secureTextEntry={passwordVisible}
               style={{ marginTop: 10, height: 60, backgroundColor: 'white', borderRadius: 10, marginBottom: 10, padding: 15 }}
               onChangeText={changedText =>
                 onChangeText(changedText, 'email')

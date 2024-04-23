@@ -119,7 +119,6 @@ const Chat = ({ navigation }) => {
           renderItem={renderItem}
           contentContainerStyle={{ flexGrow: 1, paddingBottom: 150 }}
         />
-
       </View>
     </View>
   )

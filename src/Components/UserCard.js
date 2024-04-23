@@ -11,15 +11,43 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
+import { baseUrl } from '../assets/Utils/BaseUrl';
 
 const UserCard = ({ onSwipe, cards, userId, userData }) => {
   const userDetails = useSelector((state) => state.user.user);
-  // const user_Id = userDetails.id
   const [like, setLike] = useState()
   const [lastPressTime, setLastPressTime] = useState(0);
-
   const cardRef = useRef(null);
+
+  const pushNotification = (id) => {
+    // console.log('id id', id)
+    let data = JSON.stringify({
+      "userId": id._id,
+      "message": `${userDetails.name} Liked You`
+    });
+
+    let config = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${baseUrl}/push-send`,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${userDetails.token}`
+      },
+      data: data
+    };
+
+    axios.request(config)
+      .then((response) => {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
   const handleNotify = (id) => {
+    console.log('id', id)
     if (id.isLiked) {
       id.isLiked = !id.isLiked
       setLike(false)
@@ -27,17 +55,7 @@ const UserCard = ({ onSwipe, cards, userId, userData }) => {
       setLike(!like)
     }
 
-    // if (id.isLiked) {
-    //   console.log('true condition');
-    //   setLike(!id.isLiked);
-    // } else {
-    //   console.log('false condition');
-    //   setLike(!id.isLiked);
-    // }
-
-
     let data = '';
-
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
@@ -52,10 +70,14 @@ const UserCard = ({ onSwipe, cards, userId, userData }) => {
       .request(config)
       .then((response) => {
         console.log('response', JSON.stringify(response.data));
+        userId.isLiked || like ? null : pushNotification(id)
       })
       .catch((error) => {
         console.log(error);
       });
+
+
+
   };
 
   return (
@@ -72,10 +94,8 @@ const UserCard = ({ onSwipe, cards, userId, userData }) => {
       <TouchableOpacity
         onPress={() => {
           const currentTime = new Date().getTime();
-          const delay = 500; // Adjust the delay time as needed (in milliseconds)
+          const delay = 500;
           if (currentTime - lastPressTime < delay) {
-            // Double press detected, trigger swipe right action
-            // cardRef.current.swipe('right');
             handleNotify(userId)
           }
           setLastPressTime(currentTime);
@@ -145,8 +165,6 @@ const UserCard = ({ onSwipe, cards, userId, userData }) => {
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
-            // console.log('hello', userData.length -1)
-            
             cardRef.current.swipe('left')
           }
           }
@@ -159,9 +177,7 @@ const UserCard = ({ onSwipe, cards, userId, userData }) => {
         </TouchableOpacity>
         <TouchableOpacity
           activeOpacity={0.8}
-
-
-          onPress={() => handleNotify(userId)}
+          onPress={() => { handleNotify(userId) }}
           style={{ height: 70, width: 70, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
           {userId.isLiked || like ?
             (
@@ -183,8 +199,6 @@ const UserCard = ({ onSwipe, cards, userId, userData }) => {
           activeOpacity={0.7}
           style={{ height: 50, width: 50, borderRadius: 200, alignItems: 'center', justifyContent: 'center', borderWidth: 1, borderColor: 'white', backgroundColor: 'black' }}>
           <AntDesign
-
-
             name={'star'}
             color={'white'}
             size={25}

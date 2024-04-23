@@ -1,19 +1,43 @@
-import { Text, View, TouchableOpacity, Image, FlatList, ActivityIndicator } from 'react-native'
+import { Text, View, TouchableOpacity, Image, FlatList, ActivityIndicator, } from 'react-native'
 import React, { useEffect, useState } from 'react'
+import Modal from "react-native-modal";
 import UserCard from '../../Components/UserCard';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import EvilIcons from 'react-native-vector-icons/EvilIcons'
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import io from 'socket.io-client';
 import Toast from 'react-native-toast-message';
+import { baseUrl } from '../../assets/Utils/BaseUrl';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import socketServices from '../../../socket/Socket_Service';
+import messaging from '@react-native-firebase/messaging';
 
 const Home = ({ navigation, route }) => {
+
     const userDetails = useSelector(state => state.user.user)
-    console.log('userdetails', userDetails)
     const [isLoading, setIsLoading] = useState(false)
     const userId = userDetails._id
     const [allUsers, setAllUsers] = useState([]);
     const [showNoUsers, setNoUsers] = useState(false)
+    const [modalVisible, setModalVisible] = useState(true)
+    const [showModal, setShowModal] = useState(true)
+    const [fcmToken, setFcmToken] = useState()
+    // useEffect(() => {
+    //     console.log('userdetailsss', userDetails)
+    //     // const checkToken = async () => {
+    //     //     const fcmToken = await messaging().getToken();
+    //     //     console.log('fcm')
+    //     //     if (fcmToken) {
+    //     //         setFcmToken(fcmToken)
+    //     //         console.log('fcm token', fcmToken);
+    //     //     }
+    //     // };
+
+    //     // checkToken();
+    //     // socketServices.emit('login', { ...userDetails, fcmToken });
+
+    // }, []);
 
     const getAllUsers = () => {
         setIsLoading(true)
@@ -22,7 +46,7 @@ const Home = ({ navigation, route }) => {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: 'https://appsdemo.pro/happyeverafter/user/get-all-users',
+            url: `${baseUrl}/get-all-users`,
             headers: {
                 'Authorization': `Bearer ${userDetails.token}`
             },
@@ -54,8 +78,14 @@ const Home = ({ navigation, route }) => {
                     setAllUsers(users);
                     console.log("filtered users", users)
                     {
-                        users.length < 1 &&
-                            showToast('info', `No Users In ${route.params?.country}`)
+                        users.length < 1 ?
+                            (
+                                setModalVisible(false),
+                                showToast('info', `No Users In ${route.params?.country
+                                    }`)
+                            )
+                            :
+                            (setModalVisible(true))
                     }
                 }
                 else {
@@ -93,6 +123,8 @@ const Home = ({ navigation, route }) => {
         console.log('params', route.params);
         setAllUsers([])
         getAllUsers()
+        console.log('allusers', allUsers.length)
+        // allUsers.length > 1 ? setModalVisible(true) : null
     }, [route.params?.stateChange]);
 
     const showToast = (type, message) => {
@@ -118,7 +150,15 @@ const Home = ({ navigation, route }) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <View style={{ flex: 1, alignItems: 'center', marginTop: hp('20%') }}>
+
+            {/* {
+                showModal ?
+                    ( */}
+
+            {/* ) : null
+            } */}
+
+            <View style={{ flex: 1, alignItems: 'center', marginTop: hp('20%'), zIndex: 150 }}>
 
                 <View style={{ marginTop: -hp('15%'), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -127,7 +167,7 @@ const Home = ({ navigation, route }) => {
                             Discover
                         </Text>
                     </View>
-                    <TouchableOpacity onPress={() => navigation.navigate('LikedPeople')}>
+                    <TouchableOpacity onPress={() => navigation.navigate('Notifications')}>
                         <EvilIcons
                             name={'bell'}
                             color={'black'}
@@ -136,10 +176,28 @@ const Home = ({ navigation, route }) => {
                     </TouchableOpacity>
                 </View>
 
-                {isLoading && (
-                    <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center' }}>
+                {isLoading ? (
+                    <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center', zIndex: 150, }}>
                         <ActivityIndicator size={'25'} />
                     </View>
+                ) : (
+                    <Modal style={{ height: '100%', position: 'absolute', zIndex: 100, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }} backdropOpacity={0} isVisible={modalVisible}>
+
+
+                        <View style={{ backgroundColor: 'white', zIndex: 100, padding: 40, borderRadius: 10, alignItems: 'center', gap: 20 }}>
+                            <TouchableOpacity onPress={() => setModalVisible(false)} style={{ position: 'absolute', alignSelf: 'flex-end', padding: 10 }}>
+                                <MaterialIcons name='cancel' size={25} />
+                            </TouchableOpacity>
+                            <Text style={{ color: 'black', fontSize: 20, textAlign: 'center' }}>Want To Buy Subscription?</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
+                                <TouchableOpacity onPress={() => setModalVisible(false)} style={{ backgroundColor: 'rgb(0, 123, 255)', padding: 10, width: 100, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}><Text style={{ color: 'white', fontSize: 18 }}>No</Text></TouchableOpacity>
+                                <TouchableOpacity onPress={() => {
+                                    navigation.navigate('Suscription')
+                                    setModalVisible(false)
+                                }} style={{ backgroundColor: 'rgb(40, 167, 69)', padding: 10, width: 100, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}><Text style={{ color: 'white', fontSize: 18 }}>Yes</Text></TouchableOpacity>
+                            </View>
+                        </View>
+                    </Modal>
                 )}
                 {
                     showNoUsers &&

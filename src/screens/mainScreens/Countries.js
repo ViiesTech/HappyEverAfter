@@ -17,7 +17,7 @@ export const FlagsData = [
         id: 3,
         name: "Albania",
         images: require('../../assets/images/albania.png'),
-        latitude: 41.1533,
+        latitude: 41.1533,   
         longitude: 20.1683
     },
     {
@@ -226,7 +226,7 @@ export const FlagsData = [
     {
         id: 33,
         name: "British-Indian-Ocean-Territory",
-        images: require('../../assets/images/british-indian-ocean-territory.png'),
+        images: require('../../assets/images/srilankaa.png'),
         latitude: -7.3343,
         longitude: 72.4244
     },
@@ -482,13 +482,13 @@ export const FlagsData = [
         latitude: 13.7942,
         longitude: -88.8965
     },
-    {
-        id: 70,
-        name: "England",
-        images: require('../../assets/images/england.png'),
-        latitude: 52.3555,
-        longitude: -1.1743
-    },
+    // {
+    //     id: 70,
+    //     name: "UK",
+    //     images: require('../../assets/images/england.png'),
+    //     latitude: 52.3555,
+    //     longitude: -1.1743
+    // },
     {
         id: 71,
         name: "Equatorial-guinea",
@@ -499,7 +499,7 @@ export const FlagsData = [
     {
         id: 72,
         name: "Eritrea",
-        images: require('../../assets/images/Eritrea.png'),
+        images: require('../../assets/images/eritrea.png'),
         latitude: 15.1794,
         longitude: 39.7823
     },
@@ -569,7 +569,7 @@ export const FlagsData = [
     {
         id: 82,
         name: "French-polynesia",
-        images: require('../../assets/images/French-polynesia.png'),
+        images: require('../../assets/images/french-polynesia.png'),
         latitude: -17.6797,
         longitude: -149.4068
     },
@@ -646,14 +646,14 @@ export const FlagsData = [
     {
         id: 93,
         name: "Guadeloupe",
-        images: require('../../assets/images/Guadeloupe.png'),
+        images: require('../../assets/images/guadeloupe.png'),
         latitude: 16.265,
         longitude: -61.551
     },
     {
         id: 94,
         name: "Guam",
-        images: require('../../assets/images/guam.png'),
+        images: require('../../assets/images/srilankaa.png'),
         latitude: 13.4443,
         longitude: 144.7937
     },
@@ -835,7 +835,7 @@ export const FlagsData = [
     {
         id: 120,
         name: "Kiribati",
-        images: require('../../assets/images/kiribati.png'),
+        images: require('../../assets/images/srilankaa.png'),
         latitude: -3.3704,
         longitude: -168.734
     },
@@ -856,7 +856,7 @@ export const FlagsData = [
     {
         id: 123,
         name: "Kyrgyzstan",
-        images: require('../../assets/images/Kyrgyzstan.png'),
+        images: require('../../assets/images/kyrgyzstan.png'),
         latitude: 41.2044,
         longitude: 74.7661
     },
@@ -877,14 +877,14 @@ export const FlagsData = [
     {
         id: 126,
         name: "Lebanon",
-        images: require('../../assets/images/Lebanon.png'),
+        images: require('../../assets/images/lebanon.png'),
         latitude: 33.8547,
         longitude: 35.8623
     },
     {
         id: 127,
         name: "Lesotho",
-        images: require('../../assets/images/Lesotho.png'),
+        images: require('../../assets/images/lesotho.png'),
         latitude: -29.61,
         longitude: 28.2336
     },
@@ -926,7 +926,7 @@ export const FlagsData = [
     {
         id: 133,
         name: "Macau",
-        images: require('../../assets/images/Macau.png'),
+        images: require('../../assets/images/macau.png'),
         latitude: 22.1987,
         longitude: 113.5439
     },
@@ -947,7 +947,7 @@ export const FlagsData = [
     {
         id: 136,
         name: "Malawi",
-        images: require('../../assets/images/Malawi.png'),
+        images: require('../../assets/images/malawi.png'),
         latitude: -13.2543,
         longitude: 34.3015
     },
@@ -982,7 +982,7 @@ export const FlagsData = [
     {
         id: 141,
         name: "Marshall-islands",
-        images: require('../../assets/images/marshall-island.png'),
+        images: require('../../assets/images/marshall-islands.png'),
         latitude: 7.1315,
         longitude: 171.1845
     },
@@ -1010,7 +1010,7 @@ export const FlagsData = [
     {
         id: 145,
         name: "Mayotte",
-        images: require('../../assets/images/mayotte.png'),
+        images: require('../../assets/images/new.png'),
         latitude: -12.8275,
         longitude: 45.1662
     },
@@ -1059,7 +1059,7 @@ export const FlagsData = [
     {
         id: 152,
         name: "Montserrat",
-        images: require('../../assets/images/Montserrat.png'),
+        images: require('../../assets/images/new.png'), //fake
         latitude: 16.7425,
         longitude: -62.1874
     },
@@ -1108,14 +1108,14 @@ export const FlagsData = [
     {
         id: 159,
         name: "Netherlands-antilles",
-        images: require('../../assets/images/Netherlands-antilles.png'),
+        images: require('../../assets/images/netherlands-antilles.png'),
         latitude: 12.2261,
         longitude: -69.0601
     },
     {
         id: 160,
         name: "New-caledonia",
-        images: require('../../assets/images/New-caledonia.png'),
+        images: require('../../assets/images/new.png'), //fake
         latitude: -20.9043,
         longitude: 165.618
     },
@@ -1164,7 +1164,7 @@ export const FlagsData = [
     {
         id: 167,
         name: "Northern-ireland",
-        images: require('../../assets/images/Northern-ireland.png'),
+        images: require('../../assets/images/northern-islands.png'),
         latitude: 54.7877,
         longitude: -6.4923
     },
@@ -1444,7 +1444,7 @@ export const FlagsData = [
     {
         id: 208,
         name: "Slovenia",
-        images: require('../../assets/images/Slovenia.png'),
+        images: require('../../assets/images/slovenia.png'),
         latitude: 46.1512,
         longitude: 14.9955
     },
@@ -1493,7 +1493,7 @@ export const FlagsData = [
     {
         id: 215,
         name: "Spain",
-        images: require('../../assets/images/Spain.png'),
+        images: require('../../assets/images/spain.png'),
         latitude: 40.4637,
         longitude: -3.7492
     },
@@ -1619,7 +1619,7 @@ export const FlagsData = [
     {
         id: 235,
         name: "Turkmenistan",
-        images: require('../../assets/images/turkmenistan-.png'),
+        images: require('../../assets/images/turkmenistan.png'),
         latitude: 38.9697,
         longitude: 59.5563
     },
@@ -1633,7 +1633,7 @@ export const FlagsData = [
     {
         id: 237,
         name: "Tuvalu",
-        images: require('../../assets/images/tuvalu.png'),
+        images: require('../../assets/images/united-states.png'),
         latitude: -7.1095,
         longitude: 177.6493
     },
@@ -1660,104 +1660,104 @@ export const FlagsData = [
     },
     {
         id: 241,
-        name: "United-kingdom",
+        name: "UK",
         images: require('../../assets/images/england.png'),
         latitude: 55.3781,
         longitude: -3.4360
     },
     {
-        id: 242,
+        id: 241,
         name: "United-States-Virgin-Islands",
-        images: require('../../assets/images/United-States-Virgin-Islands.png'),
+        images: require('../../assets/images/united-states-virgin-islands.png'),
         latitude: 18.3358,
         longitude: -64.8963
     },
     {
-        id: 243,
+        id: 242,
         name: "Uruguay",
         images: require('../../assets/images/uruguay.png'),
         latitude: -32.5228,
         longitude: -55.7658
     },
     {
-        id: 245,
+        id: 243,
         name: "Uzbekistan",
         images: require('../../assets/images/uzbekistan.png'),
         latitude: 41.3775,
         longitude: 64.5853
     },
     {
-        id: 246,
+        id: 244,
         name: "Vanuatu",
         images: require('../../assets/images/vanuatu.png'),
         latitude: -15.3767,
         longitude: 166.9592
     },
     {
-        id: 247,
+        id: 245,
         name: "Vatican-city",
         images: require('../../assets/images/vatican-city.png'),
         latitude: 41.9029,
         longitude: 12.4534
     },
     {
-        id: 248,
+        id: 246,
         name: "Venezuela",
         images: require('../../assets/images/venezuela.png'),
         latitude: 6.4238,
         longitude: -66.5897
     },
     {
-        id: 249,
+        id: 247,
         name: "Vietnam",
         images: require('../../assets/images/vietnam.png'),
         latitude: 14.0583,
         longitude: 108.2772
     },
     {
-        id: 250,
+        id: 248,
         name: "Wales",
-        images: require('../../assets/images/Wales.png'),
+        images: require('../../assets/images/wales.png'),
         latitude: 52.1307,
         longitude: -3.7837
     },
     {
-        id: 251,
+        id: 249,
         name: "Wallis-and-futuna",
         images: require('../../assets/images/Wallis-and-futuna.png'),
         latitude: -13.7687,
         longitude: -177.1561
     },
     {
-        id: 252,
+        id: 250,
         name: "Yemen",
         images: require('../../assets/images/yemen.png'),
         latitude: 15.5527,
         longitude: 48.5164
     },
     {
-        id: 253,
+        id: 251,
         name: "Zambia",
         images: require('../../assets/images/zambia.png'),
         latitude: -13.1339,
         longitude: 27.8493
     },
     {
-        id: 254,
+        id: 252,
         name: "Zimbabwe",
         images: require('../../assets/images/zimbabwe.png'),
         latitude: -19.0154,
         longitude: 29.1549
     },
     {
-        id: 255,
+        id: 253,
         name: "USA",
-        images: require('../../assets/images/usa.png'),
+        images: require('../../assets/images/united-states.png'),
         latitude: 41.889805,
         longitude: -102.009056
     },
     {
-        id: 256,
+        id: 254,
         name: "Russia",
         images: require('../../assets/images/russia.png'),
         latitude: 62.5240,

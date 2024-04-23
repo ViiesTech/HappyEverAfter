@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import Arrow from 'react-native-vector-icons/AntDesign'
 import FeatherIcon from 'react-native-vector-icons/Feather'
@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { clearUserToken, userDetails } from '../../redux/Slices'
 import axios from 'axios'
 import Toast from 'react-native-toast-message'
+import { baseUrl } from '../../assets/Utils/BaseUrl'
 const Profile = ({ navigation }) => {
   const dispatch = useDispatch()
   const [loading, setIsLoading] = useState(false)
@@ -27,7 +28,7 @@ const Profile = ({ navigation }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: 'https://appsdemo.pro/happyeverafter/user/logout',
+      url: `${baseUrl}/logout`,
       headers: {
         'Authorization': `Bearer ${token}`
       }
@@ -51,6 +52,7 @@ const Profile = ({ navigation }) => {
 
   }
   return (
+    <ScrollView contentContainerStyle={{flexGrow:1,paddingBottom:20}}>
     <View style={{ padding: 20 }}>
       {loading && (
         <View style={{ position: 'absolute', marginTop: 20, height: '100%', justifyContent: 'center', alignSelf: 'center' }}>
@@ -108,19 +110,17 @@ const Profile = ({ navigation }) => {
         <Text style={{ color: '#00008B', fontSize: 16 }}>Change Password</Text>
       </TouchableOpacity>
       <View style={{ height: 1, width: '100%', marginVertical: 25, backgroundColor: 'gray' }}>
-
       </View>
       <TouchableOpacity
         onPress={() =>
           handleLogout()
-
         }
         style={{ flexDirection: 'row', alignItems: 'center', gap: 20, }}>
         <FeatherIcon name='power' size={25} color={'red'} />
         <Text style={{ color: 'red', fontSize: 16 }}>Logout</Text>
       </TouchableOpacity>
-
     </View>
+    </ScrollView>
   )
 }
 

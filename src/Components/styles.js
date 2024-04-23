@@ -1,8 +1,6 @@
 import styled from 'styled-components';
-import { View, Text, TouchableOpacity, TextInput, Image } from 'react-native';
 import { StatusBar } from 'react-native';
 const statusBarHeight = StatusBar.currentHeight;
-// colors
 export const Colors = {
   primary: '#ffffff',
   secondary: '#E5E7EB',
@@ -19,7 +17,6 @@ export const Colors = {
   input: '#FDDBDD',
   backdround: '#FFFFFF'
 };
-
 const { primary, secondary, tertiary, darkLight, brand, green, red, blue, input } = Colors;
 
 export const StyledContainer = styled.View`
@@ -124,15 +121,6 @@ export const InputStyledTextField = styled.Text`
   border-width: 1px;
   padding:20px;
 `
-
-
-
-
-
-
-
-
-
 
 
 export const WelcomeContainer = styled(InnerContainer)`

@@ -1,10 +1,9 @@
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TextInput, TouchableOpacity, Image, ImageBackground } from 'react-native'
+import { View, StyleSheet, ScrollView, TextInput, TouchableOpacity, Image, ImageBackground, FlatList } from 'react-native'
 import React, { useState } from 'react'
 // import { StyledContainer, Colors, TextLabel, Card, TextSmall, StyledTextInput, StyledButtonTouch, SmallTextInput, HeaderContainer, ScreenTitle, InputStyledTextField } from '../Components/styles'
 const { primary, purple, secondary } = Colors;
 import { StyledContainer, Colors, TextLabel, Card, TextSmall, StyledTextInput, StyledButtonTouch, SmallTextInput, HeaderContainer, ScreenTitle, InputStyledTextField } from '../../Components/styles';
 import {
-
     Provider,
     ThemeProvider,
 } from "react-native-paper";
@@ -16,7 +15,6 @@ import DatePicker from 'react-native-date-picker'
 import ImagePicker from 'react-native-image-crop-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Toast from 'react-native-toast-message';
-// import { Images } from '../../assets/images/Appassets';
 const SignUp2 = ({ route, navigation }) => {
     const { email, password } = route.params.userData;
     console.log('email,password', email, password)
@@ -24,16 +22,16 @@ const SignUp2 = ({ route, navigation }) => {
     const [Name, setName] = useState('')
     const [phone, setPhone] = useState('')
     const [occupation, setOccupation] = useState('')
-
     const [male, setMale] = useState(true);
     const [female, setFemale] = useState(false);
     const [gender, setGender] = useState('male');
     const [country, setCountry] = useState(null);
-    // const [bio, setBio] = useState('')
     const [date, setDate] = useState(new Date())
     const [open, setOpen] = useState(false)
+    const [open2, setOpen2] = useState(false)
+    const [scrollEnabled, setScrollEnabled] = useState(true);
     const [profileImage, setProfileImage] = useState()
-    const [imageType, setImageType] = useState()
+    const data = [1]
     const [countries, setCountries] = useState([
         {
             label: "USA",
@@ -47,7 +45,15 @@ const SignUp2 = ({ route, navigation }) => {
             label: "Germany",
             value: "Germany",
         },
+        {
+            label: "UK",
+            value: "UK",
+        },
     ])
+
+    const toggleScrollViewScrolling = (enabled) => {
+        setScrollEnabled(enabled);
+    };
 
     const showToast = (type, message) => {
         Toast.show({
@@ -75,25 +81,31 @@ const SignUp2 = ({ route, navigation }) => {
 
     }
     const HandleSignUp = () => {
-        // console.log('phone', phone)
-        // console.log('occupation', occupation)
-        if(profileImage && Name && country  && phone && occupation){
-            navigation.navigate("Signup3", {
-                userData: {
-                    email: email, password: password, name: Name, pic: profileImage, dob: date, country: country, gender: gender, phone: phone, occupation: occupation
-                }
-            })
-        }else{
+
+        const userData = {
+            email: email,
+            password: password,
+            name: Name,
+            pic: profileImage ? JSON.stringify(profileImage) : null,
+            dob: date ? JSON.stringify(date) : null,
+            country: country,
+            gender: gender,
+            phone: phone,
+            occupation: occupation,
+        };
+
+        if (profileImage && Name && country && phone && occupation) {
+            navigation.navigate("Signup3", { userData: userData })
+        } else {
             return showToast('error', 'Plz Fill Out The Required Fields')
         }
-        
-    }
 
-    console.log('occupation', occupation)
-       
-    return (
-        <ImageBackground style={{ flex: 1 }} source={require('../../assets/images/login.png')}>
-            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+    }
+    const renderItem = () => {
+        return (
+
+
+            <View style={{ flex: 1 }}>
                 <Provider>
                     <ThemeProvider >
                         <StyledContainer>
@@ -102,13 +114,14 @@ const SignUp2 = ({ route, navigation }) => {
                             </View>
                             <Card style={styles.input}>
                                 <TextLabel>Select a Profile Picture</TextLabel>
-                                <View  style={{ width: wp('85%'), height: hp('25%'), borderRadius: 8, overflow: 'hidden' }}>
+                                <View style={{ width: wp('85%'), height: hp('25%'), borderRadius: 8, overflow: 'hidden' }}>
                                     {profileImage ? (
-                                        <Image onPress={selectAnImage} source={{ uri: profileImage.path }} style={{ width: '100%', height: '100%' }} />
+                                        <TouchableOpacity onPress={selectAnImage}>
+                                            <Image source={{ uri: profileImage.path }} style={{ width: '100%', height: '100%' }} />
+                                        </TouchableOpacity>
                                     ) : (
-                                        <TouchableOpacity onPress={selectAnImage} style={{ width: '100%',justifyContent:'center',alignItems:'center' ,height: '100%', backgroundColor: 'lightgrey' }}>
-                                            <Fontisto name='picture' color={'black'} size={140}/>
-                                            
+                                        <TouchableOpacity onPress={selectAnImage} style={{ width: '100%', justifyContent: 'center', alignItems: 'center', height: '100%', backgroundColor: 'lightgrey' }}>
+                                            <Fontisto name='picture' color={'black'} size={140} />
                                         </TouchableOpacity>
 
                                     )}
@@ -116,10 +129,8 @@ const SignUp2 = ({ route, navigation }) => {
                             </Card>
                             <Card style={styles.input}>
                                 <TextLabel>Enter your name</TextLabel>
-                                <StyledTextInput placeholder="Name" style={[styles.shadow, styles.inputBorder]}
-                                    value={Name}
-                                    onChangeText={text => setName(text)}
-                                />
+                                <TextInput onChangeText={text => setName(text)} value={Name} placeholder="Name" style={{ height: 60, width: '100%', borderColor: 'black', backgroundColor: 'white', color: 'black', borderRadius: 10, padding: 10 }} />
+
                             </Card>
                             <Card style={styles.input}>
                                 <TextLabel>Date of birth</TextLabel>
@@ -127,21 +138,26 @@ const SignUp2 = ({ route, navigation }) => {
                                     <InputStyledTextField>{date.getMonth() + 1}</InputStyledTextField>
                                     <InputStyledTextField>{date.getDate()}</InputStyledTextField>
                                     <InputStyledTextField>{date.getFullYear()}</InputStyledTextField>
-                                    <TouchableOpacity onPress={() => setOpen(true)} style={styles.dateOver} />
+                                    <TouchableOpacity style={styles.dateOver} />
                                 </View>
                             </Card>
                             <Card style={styles.input}>
                                 <TextLabel>Choose your country</TextLabel>
-                                <SafeAreaView style={{ width: wp('90%'), justifyContent: 'center', borderRadius: 10, height: 50 }}>
+                                <View style={{ width: wp('90%'), justifyContent: 'center', borderRadius: 10, height: 50 }}>
                                     <DropDownPicker
-                                        open={showDropDown}
+                                        maxHeight={100}
+                                        // onOpen={() => toggleScrollViewScrolling(false)} // Disable ScrollView scrolling when DropDownPicker is opened
+                                        // onClose={() => toggleScrollViewScrolling(true)}
+                                        open={open2}
+                                        nestedScrollEnabled={true}
+                                        dropDownDirection='down'
                                         value={country}
                                         items={countries}
-                                        setOpen={setShowDropDown}
+                                        setOpen={setOpen2}
                                         setValue={setCountry}
                                         setItems={setCountries}
                                     />
-                                </SafeAreaView>
+                                </View>
                             </Card>
                             <Card style={styles.switcher}>
                                 <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={male ? ['orange', 'red',] : ['#ffffff', '#ffffff']} style={[styles.male, styles.buttonShadow, { borderRadius: male ? 100 : 10 }]}>
@@ -156,28 +172,21 @@ const SignUp2 = ({ route, navigation }) => {
                                 </LinearGradient>
                             </Card>
                             {/* <Card style={styles.input}>
-                                <TextLabel>Write about yourself</TextLabel>
-                                <View style={{ width: wp('90%'), alignSelf: 'center', paddingHorizontal: 5, marginTop: 10, backgroundColor: 'lightgrey', borderRadius: 8 }}>
-                                    <TextInput value={bio} multiline={true} numberOfLines={6} textAlignVertical={'top'} placeholder={"Write your bio here...."} placeholderTextColor={'grey'} onChangeText={(changedText) => setBio(changedText)} style={{ fontSize: 16, color: 'black' }} />
-                                </View>
+                    <TextLabel>Write about yourself</TextLabel>
+                    <View style={{ width: wp('90%'), alignSelf: 'center', paddingHorizontal: 5, marginTop: 10, backgroundColor: 'lightgrey', borderRadius: 8 }}>
+                        <TextInput value={bio} multiline={true} numberOfLines={6} textAlignVertical={'top'} placeholder={"Write your bio here...."} placeholderTextColor={'grey'} onChangeText={(changedText) => setBio(changedText)} style={{ fontSize: 16, color: 'black' }} />
+                    </View>
 
-                            </Card> */}
+                </Card> */}
 
                             <Card style={styles.input}>
                                 <TextLabel>Enter your Phone No </TextLabel>
-                                <StyledTextInput placeholder="Phone Number" style={[styles.shadow, styles.inputBorder]}
-                                    value={phone}
-                                    onChangeText={text => setPhone(text)}
-                                />
+                                <TextInput onChangeText={text => setPhone(text)} value={phone} placeholder="Phone Number" style={{ height: 60, width: '100%', borderColor: 'black', backgroundColor: 'white', color: 'black', borderRadius: 10, padding: 10 }} />
                             </Card>
-
 
                             <Card style={styles.input}>
                                 <TextLabel>Enter your occupation</TextLabel>
-                                <StyledTextInput placeholder="Occupation" style={[styles.shadow, styles.inputBorder]}
-                                    value={occupation}
-                                    onChangeText={text => setOccupation(text)}
-                                />
+                                <TextInput onChangeText={text => setOccupation(text)} value={occupation} placeholder="Occupation" style={{ height: 60, width: '100%', borderColor: 'black', backgroundColor: 'white', color: 'black', borderRadius: 10, padding: 10 }} />
                             </Card>
 
 
@@ -188,7 +197,6 @@ const SignUp2 = ({ route, navigation }) => {
                                     </LinearGradient>
                                 </StyledButtonTouch>
                             </Card>
-
                         </StyledContainer>
                     </ThemeProvider>
                 </Provider >
@@ -205,13 +213,26 @@ const SignUp2 = ({ route, navigation }) => {
                         setOpen(false)
                     }}
                 />
-            </ScrollView>
+            </View>
+        )
+    }
+    console.log('occupation', occupation)
+    return (
+        <ImageBackground style={{ flex: 1 }} source={require('../../assets/images/login.png')}>
+            {/* <ScrollView keyboardShouldPersistTaps='always' scrollEnabled={scrollEnabled} nestedScrollEnabled={true} contentContainerStyle={{ flexGrow: 1 }}>
+              
+            </ScrollView> */}
+            <FlatList
+                contentContainerStyle={{ flexGrow: 1 }}
+                data={data} // Pass your data array here
+                renderItem={renderItem}
+                keyExtractor={(item, index) => index.toString()} // Provide a unique key extractor function
+            />
         </ImageBackground>
     )
 }
 const styles = StyleSheet.create({
     shadow: {
-        // shadowColor: input,
         shadowRadius: 10,
         shadowOffset: 0.6,
         elevation: 8,
