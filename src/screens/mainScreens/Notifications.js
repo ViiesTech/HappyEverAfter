@@ -5,10 +5,12 @@ import { useSelector } from 'react-redux'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import axios from 'axios'
 
-const Notifications = () => {
+const Notifications = ({ navigation, route }) => {
   const userDetails = useSelector(state => state.user.user)
   const [data, setData] = useState([]); // Initialize data as a state variable
   const [loading, setLoading] = useState(false)
+  console.log('stateChange',route?.params)
+
   useEffect(() => {
     setLoading(true)
     let config = {
@@ -23,7 +25,6 @@ const Notifications = () => {
     axios.request(config)
       .then((response) => {
         setLoading(false)
-
         console.log("response", JSON.stringify(response.data.data));
         const responseData = response.data.data;
         const newData = responseData.map(area => ({
@@ -37,7 +38,7 @@ const Notifications = () => {
         setLoading(false)
         console.log(error);
       });
-  }, [])
+  }, [route?.params?.stateChange])
 
   const renderItem = ({ item }) => {
     return (

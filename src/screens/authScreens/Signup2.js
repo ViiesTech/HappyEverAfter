@@ -138,9 +138,11 @@ const SignUp2 = ({ route, navigation }) => {
                                     <InputStyledTextField>{date.getMonth() + 1}</InputStyledTextField>
                                     <InputStyledTextField>{date.getDate()}</InputStyledTextField>
                                     <InputStyledTextField>{date.getFullYear()}</InputStyledTextField>
-                                    <TouchableOpacity style={styles.dateOver} />
+                                    <TouchableOpacity onPress={() => setOpen(true)} style={styles.dateOver} />
                                 </View>
                             </Card>
+
+
                             <Card style={styles.input}>
                                 <TextLabel>Choose your country</TextLabel>
                                 <View style={{ width: wp('90%'), justifyContent: 'center', borderRadius: 10, height: 50 }}>

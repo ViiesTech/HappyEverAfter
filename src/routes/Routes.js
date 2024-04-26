@@ -14,28 +14,7 @@ const Routes = () => {
     const userToken = useSelector((state) => state.user.token);
     const navigateRef = useRef(null);
 
-    useEffect(() => {
-        const handleNotificationOpened = (remoteMessage) => {
-            console.log('app opened by clicking on notification', remoteMessage);
-            navigateRef.current?.navigate('BottomStack', { screen: 'Notifications' });
-        };
-
-        const unsubscribeOpened = messaging().onNotificationOpenedApp(handleNotificationOpened);
-
-        messaging()
-            .getInitialNotification()
-            .then((remoteMessage) => {
-                if (remoteMessage) {
-                    console.log('app opened from quit state', remoteMessage);
-                    navigateRef.current?.navigate('BottomStack', { screen: 'Notifications' });
-                }
-            });
-
-        return () => {
-            unsubscribeOpened();
-        };
-    }, []);
-
+ 
     return (
         <NavigationContainer ref={navigateRef}>
             <Stack.Navigator initialRouteName="AuthStack" screenOptions={{ headerShown: false }}>

@@ -1,5 +1,5 @@
-import { View, Text, TextInput, ScrollView, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native'
-import React from 'react'
+import { View, Text, TextInput, ScrollView, TouchableOpacity, StyleSheet, ImageBackground, ActivityIndicator } from 'react-native'
+import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 import axios from 'axios'
@@ -9,9 +9,11 @@ import { formStatus } from '../../redux/Slices'
 
 const WhatULooking = ({ navigation }) => {
   const userToken = useSelector(state => state.user.token)
-  const dispatch = useDispatch()
+  const [loading, setIsLoading] = useState(false)
+  const dispatch = useDispatch()  
 
   const handleForm = () => {
+    setIsLoading(true)
     let data = JSON.stringify({
       "formStatus": 1
     });
@@ -29,12 +31,16 @@ const WhatULooking = ({ navigation }) => {
 
     axios.request(config)
       .then((response) => {
+        setIsLoading(false)
+
         console.log(JSON.stringify(response.data));
         dispatch(formStatus(1))
-        navigation.navigate('BottomStack')
+        // navigation.navigate('BottomStack')
 
       })
       .catch((error) => {
+        setIsLoading(false)
+
         console.log(error);
       });
 
@@ -101,9 +107,16 @@ const WhatULooking = ({ navigation }) => {
         </View>
         <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#D23073', '#C22B8D', '#AE24AC', '#9C1EC8']} style={styles.buttonStyle}>
           <TouchableOpacity onPress={() => handleForm()} style={{ backgroundColor: 'transparent', justifyContent: 'center' }} >
-            <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#FF4500', '#8B0000']} style={styles.buttonStyle}>
-              <Text style={[styles.next, { textAlign: 'center', color: 'white' }]}>Continue</Text>
-            </LinearGradient>
+            {loading ? (
+              <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#FF4500', '#8B0000']} style={styles.buttonStyle}>
+                <ActivityIndicator color={"black"} size={'large'} />
+              </LinearGradient>
+            ) : (
+              <LinearGradient start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} colors={['#FF4500', '#8B0000']} style={styles.buttonStyle}>
+                <Text style={[styles.next, { textAlign: 'center', color: 'white' }]}>Continue</Text>
+              </LinearGradient>
+            )}
+
           </TouchableOpacity>
         </LinearGradient>
       </ScrollView>

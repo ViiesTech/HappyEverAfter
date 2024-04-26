@@ -21,23 +21,36 @@ const Home = ({ navigation, route }) => {
     const [allUsers, setAllUsers] = useState([]);
     const [showNoUsers, setNoUsers] = useState(false)
     const [modalVisible, setModalVisible] = useState(true)
+    const [changeState, setChangeState] = useState(false)
     const [showModal, setShowModal] = useState(true)
     const [fcmToken, setFcmToken] = useState()
-    // useEffect(() => {
-    //     console.log('userdetailsss', userDetails)
-    //     // const checkToken = async () => {
-    //     //     const fcmToken = await messaging().getToken();
-    //     //     console.log('fcm')
-    //     //     if (fcmToken) {
-    //     //         setFcmToken(fcmToken)
-    //     //         console.log('fcm token', fcmToken);
-    //     //     }
-    //     // };
+    useEffect(() => {
 
-    //     // checkToken();
-    //     // socketServices.emit('login', { ...userDetails, fcmToken });
+        const handleNotificationOpened = (remoteMessage) => {
+            console.log('app opened by clicking on notification', remoteMessage);
+            setModalVisible(false)
+            setChangeState(!changeState)
+            navigation.navigate('Notifications', { stateChange: changeState });
+        };
 
-    // }, []);
+        const unsubscribeOpened = messaging().onNotificationOpenedApp(handleNotificationOpened);
+
+        messaging()
+            .getInitialNotification()
+            .then((remoteMessage) => {
+                setModalVisible(false)
+                if (remoteMessage) {
+
+                    console.log('app opened from quit state', remoteMessage);
+                    navigation.navigate('Notifications');
+                }
+            });
+
+        return () => {
+            unsubscribeOpened();
+        };
+    }, []);
+
 
     const getAllUsers = () => {
         setIsLoading(true)
@@ -211,6 +224,7 @@ const Home = ({ navigation, route }) => {
                     return (
                         <View key={index} style={{ position: 'absolute', top: 0 }}>
                             <UserCard
+                                navigation={navigation}
                                 userId={user}
                                 onSwipe={onSwipe}
                                 cards={user}

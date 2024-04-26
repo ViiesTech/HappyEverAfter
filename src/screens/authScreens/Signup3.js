@@ -12,8 +12,11 @@ import Toast from 'react-native-toast-message';
 import { baseUrl } from '../../assets/Utils/BaseUrl';
 import socketServices from '../../../socket/Socket_Service';
 import messaging from '@react-native-firebase/messaging';
+import firestore from '@react-native-firebase/firestore';
 
 const Signup3 = ({ route, navigation }) => {
+    const userCollection = firestore().collection('Users');
+
     // console.log('routes', route.params.userData) 
     // const userData = route.params.userData
     const [mySelected, setMySelected] = useState([]);
@@ -47,7 +50,7 @@ const Signup3 = ({ route, navigation }) => {
         pic: route.params.userData.pic ? JSON.parse(route.params.userData.pic) : null,
         dob: route.params.userData.dob ? new Date(JSON.parse(route.params.userData.dob)) : null,
     };
-    const HandleSignUp = () => {
+    const HandleSignUp = async () => {
         console.log('parsed user data', userData)
         setisLoading(true)
         let data = new FormData();
@@ -92,19 +95,20 @@ const Signup3 = ({ route, navigation }) => {
         console.log('imagetype', userData.pic.mime)
         if (mySelected.length > 0) {
             axios.request(config)
-                .then((response) => {
-                    setisLoading(false)
+                .then(async (response) => {
+                    setisLoading(false);
 
                     console.log("data", JSON.stringify(response.data));
-                    showToast('success', 'Registeration Successful')
-                    navigation.navigate('Login')
+                    if (response.data.success) {
+                        await userCollection.add(response.data.data); // Corrected line
+                    }
+                    showToast('success', 'Registration Successful');
+                    navigation.navigate('Login');
                 })
                 .catch((error) => {
-                    setisLoading(false)
-
-                    showToast('error', error.message)
-
-                    console.log(error);
+                    setisLoading(false);
+                    showToast('error', error.message);
+                    console.log(error); // Log the error for debugging
                 });
         } else {
             setisLoading(false)

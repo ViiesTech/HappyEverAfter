@@ -13,7 +13,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { baseUrl } from '../assets/Utils/BaseUrl';
 
-const UserCard = ({ onSwipe, cards, userId, userData }) => {
+const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
   const userDetails = useSelector((state) => state.user.user);
   const [like, setLike] = useState()
   const [lastPressTime, setLastPressTime] = useState(0);
@@ -97,7 +97,10 @@ const UserCard = ({ onSwipe, cards, userId, userData }) => {
           const delay = 500;
           if (currentTime - lastPressTime < delay) {
             handleNotify(userId)
+          } else {
+            navigation.navigate('UserProfile', { userId })
           }
+          console.log('userId', userId)
           setLastPressTime(currentTime);
         }}
 

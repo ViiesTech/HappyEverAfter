@@ -1,8 +1,45 @@
 import { View, Text, TouchableOpacity, TextInput, Image, FlatList } from 'react-native'
-import React from 'react'
+import React, { useEffect } from 'react'
 import Plus from 'react-native-vector-icons/AntDesign'
 import SearchIcon from 'react-native-vector-icons/AntDesign'
+import firestore from '@react-native-firebase/firestore';
+import { useSelector } from 'react-redux';
+
 const Chat = ({ navigation }) => {
+  const currentUser = useSelector(state => state.user.user._id);
+  const getAllUsers = async () => {
+    try {
+      const querySnapshot = await firestore()
+        .collection('chats')
+        .where('ID', 'array-contains', currentUser)
+        .get();
+
+      if (!querySnapshot.empty) {
+        // Iterate through the query results
+        querySnapshot.forEach((doc, index) => {
+          const userData = doc.data(); // Get the user data from the document
+          // console.log('User ID:', doc.id);
+          console.log('reciver idssdddd:', userData.messages[index].receiverId);
+
+          // Check if the friend's ID exists in the user data
+          if (userData.messages[index].receiverId.includes('6445AbsdHk7676Jglo33Bvo9')) {
+            const friendMessages = userData.messages; // Get the friend's message array
+            console.log('Friend Messages:', friendMessages);
+            // Handle the friend's message array as needed
+          } else {
+            console.log('Friend not found in user data.');
+          }
+        });
+      } else {
+        console.log('No users found.');
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+  useEffect(() => {
+    getAllUsers()
+  }, [])
   const data = [
     {
       id: 1,

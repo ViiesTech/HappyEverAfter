@@ -1,13 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
-
 const initialState = {
     user: [],
     token: '',
     isLoading: false,
     error: null,
     formStatus: '',
+
 };
 
 const showToast = (type, message) => {
@@ -74,10 +74,11 @@ export const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(UserLogin.fulfilled, (state, action) => {
+                console.log("action.payload", action.payload.data.formStatus)
                 state.isLoading = false; // Set isLoading to false when login is successful
                 state.token = action.payload.data.token;
                 state.user = action.payload.data;
-                // state.formStatus = action.payload.fillFormStatus
+                state.formStatus = action.payload.data.formStatus
             })
             .addCase(UserLogin.rejected, (state, action) => {
                 state.isLoading = false; // Set isLoading to false when login fails
