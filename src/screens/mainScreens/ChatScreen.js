@@ -12,9 +12,12 @@ const ChatScreen = ({ navigation, route }) => {
   const usersCollection = firestore().collection('chats');
   const [messageValue, setMessageValue] = useState('');
   const userDetails = route?.params?.userDetails;
-  // const selectedUser = userDetails._id;
+  const selectedUser = route?.params?.userDetails
   const currentUser = useSelector(state => state.user.user._id);
+  const [chatId, setChatId] = useState(`${currentUser}_${selectedUser._id}`)
+  // const selectedUser = userDetails._id;
   const UserData = useSelector(state => state.user.user);
+  console.log('currentUser', UserData)
   const [startChat, setStartChat] = useState()
   const [data, setData] = useState([]);
   const formatTime = (date) => {
@@ -42,17 +45,16 @@ const ChatScreen = ({ navigation, route }) => {
 
   let randomId = generateRandomId(24);
   console.log('random id', randomId);
-  const chatId = currentUser + '_' + '6445AbsdHk7676Jglo33Bvo9';
-
+  // const chatId = currentUser + '_' + selectedUser;
   const handleStartChat = () => {
-    firestore()
-      .collection('chats')
+    usersCollection
+      // .collection('chats')
       .doc(chatId)
       .set({
         messages: [{
           message: messageValue,
           senderId: currentUser,
-          receiverId: '6445AbsdHk7676Jglo33Bvo9',
+          receiverId: selectedUser._id,
           timeStamp: new Date(),
         }],
         Both_User_Data: [
@@ -60,14 +62,18 @@ const ChatScreen = ({ navigation, route }) => {
             name: UserData.name,
             email: UserData.email,
             _id: currentUser
+
           },
           {
-            name: 'Abc',
-            email: 'abc@gmail.com',
-            _id: '6445AbsdHk7676Jglo33Bvo9'
+            name: selectedUser.name,
+            email: 'harry@gmail.com',
+            _id: selectedUser._id
+
           }
         ],
-        ID: [currentUser, '6445AbsdHk7676Jglo33Bvo9']
+        ID: [currentUser, selectedUser._id],
+        lastMessageTime: new Date(),
+        lastMessageText: messageValue
       })
       .then(() => {
         setMessageValue('');
@@ -78,23 +84,25 @@ const ChatScreen = ({ navigation, route }) => {
 
 
   const sendMessage = () => {
-    firestore()
-      .collection('chats')
+    usersCollection
       .doc(chatId)
       .get()
       .then(docSnapshot => {
         if (docSnapshot.exists) {
-          firestore()
-            .collection('chats')
+          usersCollection
             .doc(chatId)
-            .update({
-              messages: firestore.FieldValue.arrayUnion({
-                message: messageValue,
-                senderId: currentUser,
-                receiverId: '6445AbsdHk7676Jglo33Bvo9',
-                timeStamp: new Date(),
-              }),
-            })
+            .update(
+              {
+                messages: firestore.FieldValue.arrayUnion({
+                  message: messageValue,
+                  senderId: currentUser,
+                  receiverId: selectedUser._id,
+                  timeStamp: new Date(),
+                }),
+                lastMessageTime: new Date(),
+                lastMessageText: messageValue
+
+              })
             .then(() => {
               setMessageValue('');
               console.log('Message appended successfully');
@@ -108,21 +116,22 @@ const ChatScreen = ({ navigation, route }) => {
 
 
   const getAllMessages = () => {
-    const currentUserDocId = `${currentUser}_6445AbsdHk7676Jglo33Bvo9`;
-    const alternateDocId = `6445AbsdHk7676Jglo33Bvo9_${currentUser}`;
-
-    firestore().collection('chats').doc(currentUserDocId).onSnapshot(
+    const DocId = `${currentUser}_${selectedUser._id}`;
+    const alternateDocId = `${selectedUser._id}_${currentUser}`;
+    usersCollection.doc(DocId).onSnapshot(
       (querySnapshot) => {
         if (querySnapshot.exists) {
           console.log("querySnapshottt", querySnapshot._data.messages)
           setData(querySnapshot._data.messages);
+          setChatId(DocId)
           setStartChat(false)
         } else {
-          firestore().collection('chats').doc(alternateDocId).onSnapshot(
+          usersCollection.doc(alternateDocId).onSnapshot(
             (alternateSnapshot) => {
               if (alternateSnapshot.exists) {
                 console.log("alternateSnapshot", alternateSnapshot._data.messages)
                 setData(alternateSnapshot._data.messages)
+                setChatId(alternateDocId)
                 setStartChat(false)
 
               } else {
@@ -171,7 +180,6 @@ const ChatScreen = ({ navigation, route }) => {
           </View>
           <View style={{}}>
             <View style={styles.friendTextContainer}>
-
               <Text style={styles.chatText}>{item.message}</Text>
             </View>
             <Text>{time}</Text>
@@ -215,7 +223,10 @@ const ChatScreen = ({ navigation, route }) => {
           style={{ height: 50, borderRadius: 10, padding: 10, width: '78%', backgroundColor: 'lightgray', }}
           placeholder='Type Your Message'
         />
-        <TouchableOpacity onPress={() => startChat ? handleStartChat() : sendMessage()} style={{ backgroundColor: '#FFC0CB', height: 37, width: 37, borderRadius: 17.5, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
+        <TouchableOpacity onPress={() => {
+          console.log('startChat', startChat)
+          startChat ? handleStartChat() : sendMessage()
+        }} style={{ backgroundColor: '#FFC0CB', height: 37, width: 37, borderRadius: 17.5, justifyContent: 'center', alignItems: 'center', padding: 5 }}>
           <Ionicons name='send' color={'white'} size={20} />
         </TouchableOpacity>
       </View>

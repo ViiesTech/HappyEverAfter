@@ -7,7 +7,7 @@ const initialState = {
     isLoading: false,
     error: null,
     formStatus: '',
-
+    subscriptionPlan: ''
 };
 
 const showToast = (type, message) => {
@@ -66,6 +66,9 @@ export const authSlice = createSlice({
             state.formStatus = action.payload
             // console.log('redux form status', action.payload)
         },
+        setSubscription: (state, action) => {
+            state.subscriptionPlan = action.payload
+        }
     },
     extraReducers: (builder) => {
         builder
@@ -87,6 +90,6 @@ export const authSlice = createSlice({
     },
 });
 
-export const { clearUserToken, userDetails, setError, makeLoadingFalse, formStatus } = authSlice.actions;
+export const { clearUserToken, userDetails, setError, makeLoadingFalse, formStatus, setSubscription } = authSlice.actions;
 
 export default authSlice.reducer;

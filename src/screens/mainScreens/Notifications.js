@@ -4,19 +4,20 @@ import { FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import axios from 'axios'
+import { baseUrl } from '../../assets/Utils/BaseUrl'
 
 const Notifications = ({ navigation, route }) => {
   const userDetails = useSelector(state => state.user.user)
   const [data, setData] = useState([]); // Initialize data as a state variable
   const [loading, setLoading] = useState(false)
-  console.log('stateChange',route?.params)
+  console.log('stateChange', route?.params)
 
   useEffect(() => {
     setLoading(true)
     let config = {
       method: 'get',
       maxBodyLength: Infinity,
-      url: 'https://appsdemo.pro/happyeverafter/user/notify-ifUser-like',
+      url: `${baseUrl}/user/notify-ifUser-like`,
       headers: {
         'Authorization': `Bearer ${userDetails.token}`
       }
@@ -30,7 +31,7 @@ const Notifications = ({ navigation, route }) => {
         const newData = responseData.map(area => ({
           id: area._id,
           name: area.name,
-          ProfilePic: `https://appsdemo.pro/happyeverafter/${area.image}`
+          ProfilePic: `https://www.yourappdemo.com/happyeverafter/user/${area.image}`
         }));
         setData(newData); // Update the state with the new data
       })

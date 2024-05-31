@@ -10,7 +10,7 @@ import { formStatus } from '../../redux/Slices'
 const WhatULooking = ({ navigation }) => {
   const userToken = useSelector(state => state.user.token)
   const [loading, setIsLoading] = useState(false)
-  const dispatch = useDispatch()  
+  const dispatch = useDispatch()
 
   const handleForm = () => {
     setIsLoading(true)
@@ -21,7 +21,7 @@ const WhatULooking = ({ navigation }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `${baseUrl}/fill-form`,
+      url: `${baseUrl}/user/fill-form`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${userToken}`

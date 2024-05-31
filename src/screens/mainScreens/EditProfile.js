@@ -125,7 +125,7 @@ const EditProfile = ({ navigation }) => {
             />
           ) : (
             <Image
-              source={{ uri: `https://appsdemo.pro/happyeverafter/${details.image}` }}
+              source={{ uri: `https://www.yourappdemo.com/happyeverafter/user/${details.image}` }}
               style={{ height: 130, width: 130, borderRadius: 65, borderWidth: 1.5, borderColor: 'grey' }}
             />
           )}

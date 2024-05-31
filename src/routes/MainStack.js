@@ -14,23 +14,28 @@ const Stack = createNativeStackNavigator();
 
 const MainStack = ({ navigation }) => {
   const formStatus = useSelector(state => state.user.formStatus)
+  const subscriptionPlan = useSelector(state => state.user.subscriptionPlan)
   console.log('formStatus', formStatus)
   // Add navigation as a dependency
-
 
   return (
     <Stack.Navigator initialRouteName={'WhatULooking'} screenOptions={{ headerShown: false }}>
       {formStatus == 0 ? (
         <Stack.Screen name='WhatULooking' component={WhatULooking} />
-
       ) : (
         <>
-          <Stack.Screen name='BottomStack' component={BottomStack} />
-          <Stack.Screen name='ChatScreen' component={ChatScreen} />
-          <Stack.Screen name='Subscription' component={Subscription} />
-          <Stack.Screen name='EditProfile' component={EditProfile} />
-          <Stack.Screen name='ChangePassword' component={ChangePassword} />
-          <Stack.Screen name='UserProfile' component={UserProfile} />
+          {subscriptionPlan ? (
+            <>
+              <Stack.Screen name='BottomStack' component={BottomStack} />
+              <Stack.Screen name='ChatScreen' component={ChatScreen} />
+              <Stack.Screen name='Subscription' component={Subscription} />
+              <Stack.Screen name='EditProfile' component={EditProfile} />
+              <Stack.Screen name='ChangePassword' component={ChangePassword} />
+              <Stack.Screen name='UserProfile' component={UserProfile} />
+            </>
+          ) : (
+            <Stack.Screen name='Subscription' component={Subscription} />
+          )}
         </>
       )}
 

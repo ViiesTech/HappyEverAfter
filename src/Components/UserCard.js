@@ -29,7 +29,7 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `${baseUrl}/push-send`,
+      url: `${baseUrl}/user/push-send`,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${userDetails.token}`
@@ -59,7 +59,7 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `https://appsdemo.pro/happyeverafter/user/like-user/${id._id}`,
+      url: `https://www.yourappdemo.com/happyeverafter/user/like-user/${id._id}`,
       headers: {
         'Authorization': `Bearer ${userDetails.token}`,
       },
@@ -75,9 +75,6 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
       .catch((error) => {
         console.log(error);
       });
-
-
-
   };
 
   return (

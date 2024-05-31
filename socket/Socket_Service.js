@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import io from "socket.io-client";
 
 // const SOCKET_URL = "ws://appsdemo.pro:3007";  // Use http instead of https, and specify port 3000 //Live URL
-const SOCKET_URL = "ws://appsdemo.pro:3010";  // Use http instead of https, and specify port 3000 //LOCAL URL
+const SOCKET_URL = "ws://yourappdemo.com:3010";  // Use http instead of https, and specify port 3000 //LOCAL URL
 
 class WSService {
     initiaize = async () => {

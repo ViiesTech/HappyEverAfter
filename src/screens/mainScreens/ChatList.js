@@ -1,121 +1,100 @@
 import { View, Text, TouchableOpacity, TextInput, Image, FlatList } from 'react-native'
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Plus from 'react-native-vector-icons/AntDesign'
 import SearchIcon from 'react-native-vector-icons/AntDesign'
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
 
 const Chat = ({ navigation }) => {
-  const currentUser = useSelector(state => state.user.user._id);
-  const getAllUsers = async () => {
-    try {
-      const querySnapshot = await firestore()
-        .collection('chats')
-        .where('ID', 'array-contains', currentUser)
-        .get();
+  const currentUserId = useSelector(state => state.user.user._id);
+  console.log('currentUserId', currentUserId)
+  const chatsCollection = firestore().collection('chats')
+  const userCollection = firestore().collection('Users')
+  // console.log('current user',currentUser)
+  const [data, setData] = useState([
+    //  {
+    //    id: 1,
+    //    profilePic: require('../../assets/images/profile7.jpg'),
+    //    name: 'William Johnson',
+    //    text: 'Gather Together for',
+    //    time: 'Today',
+    //    totalMsgs: '5'
+    //  },
+  ]);
 
-      if (!querySnapshot.empty) {
-        // Iterate through the query results
-        querySnapshot.forEach((doc, index) => {
-          const userData = doc.data(); // Get the user data from the document
-          // console.log('User ID:', doc.id);
-          console.log('reciver idssdddd:', userData.messages[index].receiverId);
 
-          // Check if the friend's ID exists in the user data
-          if (userData.messages[index].receiverId.includes('6445AbsdHk7676Jglo33Bvo9')) {
-            const friendMessages = userData.messages; // Get the friend's message array
-            console.log('Friend Messages:', friendMessages);
-            // Handle the friend's message array as needed
-          } else {
-            console.log('Friend not found in user data.');
-          }
-        });
-      } else {
-        console.log('No users found.');
-      }
-    } catch (error) {
-      console.error('Error fetching users:', error);
-    }
-  };
   useEffect(() => {
-    getAllUsers()
-  }, [])
-  const data = [
-    {
-      id: 1,
-      profilePic: require('../../assets/images/profile7.jpg'),
-      name: 'William Johnson',
-      text: 'Gather Together for',
-      time: 'Today',
-      totalMsgs: '5'
-    },
-
-    {
-      id: 2,
-      profilePic: require('../../assets/images/profile.png'),
-      name: 'Melissa Morillo',
-      text: 'Gather Together for',
-      time: 'Today',
-      totalMsgs: '3'
-    },
-    {
-      id: 3,
-      profilePic: require('../../assets/images/profile.png'),
-      name: 'Emily Johnson',
-      text: 'Gather Together for',
-      time: 'Yesterday',
-      totalMsgs: '7'
-    },
-    {
-      id: 4,
-      profilePic: require('../../assets/images/profile4.png'),
-      name: 'Sophia Wilson',
-      text: 'Gather Together for',
-      time: 'Yesterday',
-      totalMsgs: '8'
-    },
-
-    {
-      id: 5,
-      profilePic: require('../../assets/images/profile6.jpg'),
-      name: 'Ella Harris',
-      text: 'Gather Together for',
-      time: 'Wednesday',
-      totalMsgs: '6'
-    },
+    // const unsubscribe = navigation.addListener('focus', () => {
+    getAllChats();
+    // handleSearchTextChange('')
+    // });
+    // return unsubscribe;
+  }, []);
 
 
-    {
-      id: 6,
-      profilePic: require('../../assets/images/profile6.jpg'),
-      name: 'Grace Walker',
-      text: 'Gather Together for',
-      time: 'Tuesday',
-      totalMsgs: '5'
-    },
-    {
-      id: 7,
-      profilePic: require('../../assets/images/profile7.jpg'),
-      name: 'James Smith',
-      text: 'Gather Together for',
-      time: 'Tuesday',
-      totalMsgs: '5'
-    },
+  const getAllChats = () => {
+    chatsCollection
+      .where('ID', 'array-contains', currentUserId)
+      .orderBy('lastMessageTime', 'desc')
+      .onSnapshot(snapshot => {
+        const chatsData = [];
+        snapshot?.forEach(eachChat => {
+          console.log('eachChat', eachChat)
+          const chatId = eachChat.data().ID.find(id => id === currentUserId); // Use find instead of filter
+          chatsData.push({
+            ...eachChat.data(),
+            chatId,
+          });
+        });
+        // console.log('chatsData',chatsData)
 
-  ]
+        Promise.all(
+          chatsData.map(async chat => {
+            console.log('chatId', chat.chatId)
+            const userSnapshot = await userCollection
+              .doc(chat.chatId)
+              .get();
+
+            return {
+              ...userSnapshot.data(),
+              lastMessageText: chat.lastMessageText,
+              lastMessageTime: chat.lastMessageTime,
+            };
+          }),
+        )
+
+          .then(userData => {
+            setData(userData);
+            console.log('userData', userData)
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      });
+
+  };
+
+
 
   const renderItem = ({ item }) => {
+    console.log('item', item)
     return (
       <View style={{ flex: 1 }}>
-        <TouchableOpacity onPress={() => navigation.navigate('ChatScreen')} style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
+        <TouchableOpacity
+          // onPress={() => {
+          //   // console.log('item', item)
+          //   navigation.navigate('ChatScreen', { _id: item._id })
+          // }}
+          style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
 
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
             <View>
-              <Image style={{ height: 60, width: 60, borderRadius: 30 }} source={item.profilePic} />
+              {/* <Image source={item.profilePic} style={{ height: 60, width: 60, borderRadius: 30 }} /> */}
+              <View style={{ height: 60, width: 60, borderRadius: 30 }}></View>
             </View>
             <View>
               <Text style={{ color: 'black', fontSize: 18, fontWeight: '600' }}>{item.name}</Text>
-              <Text style={{ fontSize: 16, color: 'gray' }}>{item.text}</Text>
+              <Text style={{ fontSize: 16, color: 'gray', fontWeight: 'bold' }}>{item.lastMessageText}</Text>
             </View>
           </View>
           <View style={{ alignItems: 'center', gap: 5 }}>
@@ -124,7 +103,7 @@ const Chat = ({ navigation }) => {
             </Text>
             <View style={{ backgroundColor: 'limegreen', height: 22, width: 22, borderRadius: 11, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ color: 'white' }}>
-                {item.totalMsgs}
+                1
               </Text>
             </View>
           </View>
@@ -140,7 +119,7 @@ const Chat = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color: 'black', fontSize: 22, fontWeight: 600 }}>Chats</Text>
-        <TouchableOpacity style={{ position: 'absolute', right: 10 }}>
+        <TouchableOpacity onPress={() => navigation.navigate('ChatScreen')} style={{ position: 'absolute', right: 10 }}>
           <Plus name='plus' color='blue' size={30} />
         </TouchableOpacity>
       </View>

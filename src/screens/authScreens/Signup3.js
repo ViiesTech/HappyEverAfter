@@ -14,9 +14,9 @@ import socketServices from '../../../socket/Socket_Service';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 
+
 const Signup3 = ({ route, navigation }) => {
     const userCollection = firestore().collection('Users');
-
     // console.log('routes', route.params.userData) 
     // const userData = route.params.userData
     const [mySelected, setMySelected] = useState([]);
@@ -29,9 +29,7 @@ const Signup3 = ({ route, navigation }) => {
             console.log('fcm')
             if (fcmToken) {
                 setFcmToken(fcmToken)
-
                 console.log('fcm token', fcmToken);
-
             }
         };
 
@@ -51,7 +49,7 @@ const Signup3 = ({ route, navigation }) => {
         dob: route.params.userData.dob ? new Date(JSON.parse(route.params.userData.dob)) : null,
     };
     const HandleSignUp = async () => {
-        console.log('parsed user data', userData)
+        // console.log('parsed user data', userData)
         setisLoading(true)
         let data = new FormData();
         data.append('name', userData.name);
@@ -74,7 +72,7 @@ const Signup3 = ({ route, navigation }) => {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `${baseUrl}/register`,
+            url: `${baseUrl}/user/register`,
             headers: {
                 'Content-Type': 'multipart/form-data',
                 // 'Authorization': `Bearer ${userToken}`,
@@ -83,24 +81,23 @@ const Signup3 = ({ route, navigation }) => {
             data: data
         };
 
-        console.log('name', userData.name)
-        console.log('email', userData.email)
-        console.log('password', userData.password)
-        console.log('dob', JSON.stringify(userData.dob), typeof userData.dob)
-        console.log('country', userData.country)
-        console.log('gender', userData.gender)
-        console.log('about', userData.bio)
-        console.log('interests', mySelected)
-        console.log('image', userData.pic.path)
-        console.log('imagetype', userData.pic.mime)
+        // console.log('name', userData.name)
+        // console.log('email', userData.email)
+        // console.log('password', userData.password)
+        // console.log('dob', JSON.stringify(userData.dob), typeof userData.dob)
+        // console.log('country', userData.country)
+        // console.log('gender', userData.gender)
+        // console.log('about', userData.bio)
+        // console.log('interests', mySelected)
+        // console.log('image', userData.pic.path)
+        // console.log('imagetype', userData.pic.mime)
         if (mySelected.length > 0) {
             axios.request(config)
                 .then(async (response) => {
                     setisLoading(false);
-
-                    console.log("data", JSON.stringify(response.data));
+                    console.log("response data", JSON.stringify(response.data.data));
                     if (response.data.success) {
-                        await userCollection.add(response.data.data); // Corrected line
+                        await userCollection.doc(response.data.data._id).set(response.data.data); // Corrected line
                     }
                     showToast('success', 'Registration Successful');
                     navigation.navigate('Login');
@@ -108,11 +105,10 @@ const Signup3 = ({ route, navigation }) => {
                 .catch((error) => {
                     setisLoading(false);
                     showToast('error', error.message);
-                    console.log(error); // Log the error for debugging
+                    console.log(error);
                 });
         } else {
             setisLoading(false)
-
             return showToast('error', 'Plz Choose Your Interests')
         }
 

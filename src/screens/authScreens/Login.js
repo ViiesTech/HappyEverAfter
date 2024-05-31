@@ -21,9 +21,7 @@ const Login = ({ navigation }) => {
       console.log('fcm')
       if (fcmToken) {
         setFcmToken(fcmToken)
-
         console.log('fcm token', fcmToken);
-
       }
     };
     checkToken();
@@ -63,7 +61,7 @@ const Login = ({ navigation }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `${baseUrl}/login`,
+      url: `${baseUrl}/user/login`,
       headers: {
         'Content-Type': 'application/json',
       },
@@ -71,7 +69,6 @@ const Login = ({ navigation }) => {
     };
     if (form.email && form.password) {
       dispatch(UserLogin(config))
-
     } else {
 
       return showToast('error', "Plz Fill The Required Fields")

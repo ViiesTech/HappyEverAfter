@@ -38,7 +38,7 @@ const ChangePassword = ({ navigation }) => {
         let config = {
             method: 'post',
             maxBodyLength: Infinity,
-            url: `${baseUrl}/update-password`,
+            url: `${baseUrl}/user/update-password`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${userDetails.token}`

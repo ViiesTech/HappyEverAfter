@@ -28,7 +28,6 @@ const Home = ({ navigation, route }) => {
 
         const handleNotificationOpened = (remoteMessage) => {
             console.log('app opened by clicking on notification', remoteMessage);
-            setModalVisible(false)
             setChangeState(!changeState)
             navigation.navigate('Notifications', { stateChange: changeState });
         };
@@ -38,9 +37,7 @@ const Home = ({ navigation, route }) => {
         messaging()
             .getInitialNotification()
             .then((remoteMessage) => {
-                setModalVisible(false)
                 if (remoteMessage) {
-
                     console.log('app opened from quit state', remoteMessage);
                     navigation.navigate('Notifications');
                 }
@@ -59,7 +56,7 @@ const Home = ({ navigation, route }) => {
         let config = {
             method: 'get',
             maxBodyLength: Infinity,
-            url: `${baseUrl}/get-all-users`,
+            url: `${baseUrl}/user/get-all-users`,
             headers: {
                 'Authorization': `Bearer ${userDetails.token}`
             },
@@ -74,7 +71,7 @@ const Home = ({ navigation, route }) => {
                 if (route.params?.country) {
                     const users = data.message.map((area, index) => {
                         if (area.country === route.params?.country) {
-                            const imageUrl = `https://appsdemo.pro/happyeverafter/${area.image}`;
+                            const imageUrl = `https://www.yourappdemo.com/happyeverafter/${area.image}`;
                             const isLiked = checkLiked(area.isLike, userId);
                             return {
                                 uid: index,
@@ -93,18 +90,17 @@ const Home = ({ navigation, route }) => {
                     {
                         users.length < 1 ?
                             (
-                                setModalVisible(false),
                                 showToast('info', `No Users In ${route.params?.country
                                     }`)
                             )
                             :
-                            (setModalVisible(true))
+                            null
                     }
                 }
                 else {
                     const data = response.data
                     data.message.map((area, index) => {
-                        const imageUrl = `https://appsdemo.pro/happyeverafter/${area.image}`;
+                        const imageUrl = `https://www.yourappdemo.com/happyeverafter/${area.image}`;
                         const isLiked = checkLiked(area.isLike, userId);
                         setAllUsers((prevUsers) => [
                             ...prevUsers,
@@ -175,7 +171,7 @@ const Home = ({ navigation, route }) => {
 
                 <View style={{ marginTop: -hp('15%'), flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', width: '90%' }}>
                     <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <Image source={{ uri: `https://appsdemo.pro/happyeverafter/${userDetails.image}` }} style={{ height: 50, width: 50, borderRadius: 200, backgroundColor: 'lightgrey', borderWidth: 1.5, borderColor: 'gray' }} />
+                        <Image source={{ uri: `https://www.yourappdemo.com/happyeverafter/${userDetails.image}` }} style={{ height: 50, width: 50, borderRadius: 200, backgroundColor: 'lightgrey', borderWidth: 1.5, borderColor: 'gray' }} />
                         <Text style={{ fontWeight: 'bold', fontSize: hp('2.8%'), color: 'black', marginLeft: 10 }}>
                             Discover
                         </Text>
@@ -190,28 +186,11 @@ const Home = ({ navigation, route }) => {
                 </View>
 
                 {isLoading ? (
+                    // console.log('hello')
                     <View style={{ height: '100%', justifyContent: 'center', alignItems: 'center', zIndex: 150, }}>
                         <ActivityIndicator size={'25'} />
                     </View>
-                ) : (
-                    <Modal style={{ height: '100%', position: 'absolute', zIndex: 100, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' }} backdropOpacity={0} isVisible={modalVisible}>
-
-
-                        <View style={{ backgroundColor: 'white', zIndex: 100, padding: 40, borderRadius: 10, alignItems: 'center', gap: 20 }}>
-                            <TouchableOpacity onPress={() => setModalVisible(false)} style={{ position: 'absolute', alignSelf: 'flex-end', padding: 10 }}>
-                                <MaterialIcons name='cancel' size={25} />
-                            </TouchableOpacity>
-                            <Text style={{ color: 'black', fontSize: 20, textAlign: 'center' }}>Want To Buy Subscription?</Text>
-                            <View style={{ flexDirection: 'row', justifyContent: 'space-around', width: '100%' }}>
-                                <TouchableOpacity onPress={() => setModalVisible(false)} style={{ backgroundColor: 'rgb(0, 123, 255)', padding: 10, width: 100, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}><Text style={{ color: 'white', fontSize: 18 }}>No</Text></TouchableOpacity>
-                                <TouchableOpacity onPress={() => {
-                                    navigation.navigate('Suscription')
-                                    setModalVisible(false)
-                                }} style={{ backgroundColor: 'rgb(40, 167, 69)', padding: 10, width: 100, justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}><Text style={{ color: 'white', fontSize: 18 }}>Yes</Text></TouchableOpacity>
-                            </View>
-                        </View>
-                    </Modal>
-                )}
+                ) : null}
                 {
                     showNoUsers &&
                     (
