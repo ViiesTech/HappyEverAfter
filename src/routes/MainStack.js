@@ -24,7 +24,7 @@ const MainStack = ({ navigation }) => {
         <Stack.Screen name='WhatULooking' component={WhatULooking} />
       ) : (
         <>
-          {subscriptionPlan ? (
+          {subscriptionPlan !== "Basic" ? (
             <>
               <Stack.Screen name='BottomStack' component={BottomStack} />
               <Stack.Screen name='ChatScreen' component={ChatScreen} />

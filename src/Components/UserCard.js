@@ -58,7 +58,7 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
     let data = '';
     let config = {
       method: 'post',
-      maxBodyLength: Infinity,
+      maxBodyLength: Infinity,   
       url: `https://www.yourappdemo.com/happyeverafter/user/like-user/${id._id}`,
       headers: {
         'Authorization': `Bearer ${userDetails.token}`,

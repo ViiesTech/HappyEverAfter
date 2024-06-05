@@ -31,7 +31,7 @@ const Notifications = ({ navigation, route }) => {
         const newData = responseData.map(area => ({
           id: area._id,
           name: area.name,
-          ProfilePic: `https://www.yourappdemo.com/happyeverafter/user/${area.image}`
+          ProfilePic: `https://www.yourappdemo.com/happyeverafter/${area.image}`
         }));
         setData(newData); // Update the state with the new data
       })

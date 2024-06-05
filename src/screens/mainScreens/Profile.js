@@ -102,7 +102,7 @@ const Profile = ({ navigation }) => {
           <FontAwesome5 name='satellite-dish' size={25} color={'blue'} />
           <Text style={{ color: '#00008B', fontSize: 16 }}>Tell Your Friend</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => dispatch(setSubscription(''))} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
+        <TouchableOpacity  style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
           <AntDesign name='tago' size={25} color={'blue'} />
           <Text style={{ color: '#00008B', fontSize: 16 }}>Promotions</Text>
         </TouchableOpacity>

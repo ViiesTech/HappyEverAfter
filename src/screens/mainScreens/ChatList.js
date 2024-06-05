@@ -12,67 +12,115 @@ const Chat = ({ navigation }) => {
   const userCollection = firestore().collection('Users')
   // console.log('current user',currentUser)
   const [data, setData] = useState([
-    //  {
-    //    id: 1,
-    //    profilePic: require('../../assets/images/profile7.jpg'),
-    //    name: 'William Johnson',
-    //    text: 'Gather Together for',
-    //    time: 'Today',
-    //    totalMsgs: '5'
-    //  },
+     {
+       id: 1,
+       profilePic: require('../../assets/images/profile6.jpg'),
+       name: 'William Johnson',
+       text: 'Gather Together for',
+       time: 'Today',
+       totalMsgs: '4'
+     },
+     {
+       id: 2,
+       profilePic: require('../../assets/images/profile7.jpg'),
+       name: 'William Johnson',
+       text: 'Gather Together for',
+       time: 'Today',
+       totalMsgs: '5'
+     },
+     {
+       id: 3,
+       profilePic: require('../../assets/images/profile4.png'),
+       name: 'William Johnson',
+       text: 'Gather Together for',
+       time: 'Today',
+       totalMsgs: '5'
+     },
+     {
+       id: 4,
+       profilePic: require('../../assets/images/profile.png'),
+       name: 'William Johnson',
+       text: 'Gather Together for',
+       time: 'Today',
+       totalMsgs: '5'
+     },
+     {
+       id: 5,
+       profilePic: require('../../assets/images/profile6.jpg'),
+       name: 'William Johnson',
+       text: 'Gather Together for',
+       time: 'Today',
+       totalMsgs: '5'
+     },
+     {
+       id: 6,
+       profilePic: require('../../assets/images/profile7.jpg'),
+       name: 'William Johnson',
+       text: 'Gather Together for',
+       time: 'Today',
+       totalMsgs: '5'
+     },
+     {
+       id: 7,
+       profilePic: require('../../assets/images/profile.png'),
+       name: 'William Johnson',
+       text: 'Gather Together for',
+       time: 'Today',
+       totalMsgs: '5'
+     },
   ]);
 
 
-  useEffect(() => {
-    // const unsubscribe = navigation.addListener('focus', () => {
-    getAllChats();
-    // handleSearchTextChange('')
-    // });
-    // return unsubscribe;
-  }, []);
+  // useEffect(() => {
+  //   // const unsubscribe = navigation.addListener('focus', () => {
+  //   getAllChats();
+  //   // handleSearchTextChange('')
+  //   // });
+  //   // return unsubscribe;
+  // }, []);
 
 
-  const getAllChats = () => {
-    chatsCollection
-      .where('ID', 'array-contains', currentUserId)
-      .orderBy('lastMessageTime', 'desc')
-      .onSnapshot(snapshot => {
-        const chatsData = [];
-        snapshot?.forEach(eachChat => {
-          console.log('eachChat', eachChat)
-          const chatId = eachChat.data().ID.find(id => id === currentUserId); // Use find instead of filter
-          chatsData.push({
-            ...eachChat.data(),
-            chatId,
-          });
-        });
-        // console.log('chatsData',chatsData)
+  // const getAllChats = () => {
+  //   chatsCollection
+  //     .where('ID', 'array-contains', currentUserId)
+  //     .orderBy('lastMessageTime', 'desc')
+  //     .onSnapshot(snapshot => {
+  //       const chatsData = [];
+  //       snapshot?.forEach(eachChat => {
+  //         console.log('eachChat', eachChat)
+  //         const chatId = eachChat.data().ID.find(id => id === currentUserId); // Use find instead of filter
+  //         chatsData.push({
+  //           ...eachChat.data(),
+  //           chatId,
+  //         });
+  //       });
+  //       // console.log('chatsData',chatsData)
 
-        Promise.all(
-          chatsData.map(async chat => {
-            console.log('chatId', chat.chatId)
-            const userSnapshot = await userCollection
-              .doc(chat.chatId)
-              .get();
+  //       Promise.all(
+  //         chatsData.map(async chat => {
+  //           console.log('chatId', chat.chatId)
+  //           const userSnapshot = await userCollection
+  //             .doc(chat.chatId)
+  //             .get();
 
-            return {
-              ...userSnapshot.data(),
-              lastMessageText: chat.lastMessageText,
-              lastMessageTime: chat.lastMessageTime,
-            };
-          }),
-        )
+  //           return {
+  //             ...userSnapshot.data(),
+  //             lastMessageText: chat.lastMessageText,
+  //             lastMessageTime: chat.lastMessageTime,
+  //           };
+  //         }),
+  //       )
 
-          .then(userData => {
-            setData(userData);
-            console.log('userData', userData)
-          })
-          .catch(error => {
-            console.error(error);
-          });
-      });
+  //         .then(userData => {
+  //           setData(userData);
+  //           console.log('userData', userData)
+  //         })
+  //         .catch(error => {
+  //           console.error(error);
+  //         });
+  //     });
 
-  };
+  // };
 
 
 
@@ -89,12 +137,11 @@ const Chat = ({ navigation }) => {
 
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
             <View>
-              {/* <Image source={item.profilePic} style={{ height: 60, width: 60, borderRadius: 30 }} /> */}
-              <View style={{ height: 60, width: 60, borderRadius: 30 }}></View>
+              <Image source={item.profilePic} style={{ height: 60, width: 60, borderRadius: 30 }} />
             </View>
             <View>
               <Text style={{ color: 'black', fontSize: 18, fontWeight: '600' }}>{item.name}</Text>
-              <Text style={{ fontSize: 16, color: 'gray', fontWeight: 'bold' }}>{item.lastMessageText}</Text>
+              <Text style={{ fontSize: 16, color: 'gray', fontWeight: 'bold' }}>{item.text}</Text>
             </View>
           </View>
           <View style={{ alignItems: 'center', gap: 5 }}>

@@ -64,7 +64,7 @@ const EditProfile = ({ navigation }) => {
     let config = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `${baseUrl}/profile-edit`,
+      url: `${baseUrl}/user/profile-edit`,
       headers: {
         'Content-Type': 'multipart/form-data',
         'Authorization': `Bearer ${details.token}`,
@@ -125,7 +125,7 @@ const EditProfile = ({ navigation }) => {
             />
           ) : (
             <Image
-              source={{ uri: `https://www.yourappdemo.com/happyeverafter/user/${details.image}` }}
+              source={{ uri: `https://www.yourappdemo.com/happyeverafter/${details.image}` }}
               style={{ height: 130, width: 130, borderRadius: 65, borderWidth: 1.5, borderColor: 'grey' }}
             />
           )}
