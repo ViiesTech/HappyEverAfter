@@ -9,6 +9,8 @@ const UserProfile = ({ navigation, route }) => {
     console.log('routes', route.params.userId)
     const userDetails = route.params.userId
     console.log('details', userDetails);
+
+    
     return (
         <View style={{ flex: 1, padding: 15 }}>
             <TouchableOpacity style={{ height: 30, width: 30 }} onPress={() => navigation.goBack()}>

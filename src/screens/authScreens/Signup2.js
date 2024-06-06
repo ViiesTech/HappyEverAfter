@@ -145,7 +145,10 @@ const SignUp2 = ({ route, navigation }) => {
 
                             <Card style={styles.input}>
                                 <TextLabel>Choose your country</TextLabel>
-                                <View style={{ width: wp('90%'), justifyContent: 'center', borderRadius: 10, height: 50 }}>
+                                {
+                                    console.log("open2", open2)
+                                }
+                                <View style={{ width: wp('90%'), justifyContent: 'center', borderRadius: 10, height: open2 == true ? 150 : 50, justifyContent:'flex-start', }}>
                                     <DropDownPicker
                                         maxHeight={100}
                                         // onOpen={() => toggleScrollViewScrolling(false)} // Disable ScrollView scrolling when DropDownPicker is opened

@@ -13,6 +13,15 @@ const Notifications = ({ navigation, route }) => {
   console.log('stateChange', route?.params)
 
   useEffect(() => {
+    const sub = navigation.addListener('focus', ()=>{
+
+      getNoti()
+    })
+    return sub
+  }, [navigation])
+
+
+  const getNoti = () => {
     setLoading(true)
     let config = {
       method: 'get',
@@ -39,7 +48,7 @@ const Notifications = ({ navigation, route }) => {
         setLoading(false)
         console.log(error);
       });
-  }, [route?.params?.stateChange])
+  }
 
   const renderItem = ({ item }) => {
     return (

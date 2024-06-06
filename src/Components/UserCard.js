@@ -12,9 +12,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { baseUrl } from '../assets/Utils/BaseUrl';
+import { ShowToast } from '../globalFunctions/ShowToast';
 
 const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
   const userDetails = useSelector((state) => state.user.user);
+  const subscriptionPlan = useSelector(state => state.user.subscriptionPlan)
+
+  console.log("subscriptionPlan", subscriptionPlan)
   const [like, setLike] = useState()
   const [lastPressTime, setLastPressTime] = useState(0);
   const cardRef = useRef(null);
@@ -78,16 +82,18 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
   };
 
   return (
+    
     <TinderCard
       className="swipe"
       preventSwipe={['up', 'down']}
-      style={styles.tinderCard}
+    
       flickOnSwipe={true}
       onSwipe={(direction) => {
         onSwipe(direction)
       }}
       ref={cardRef}
     >
+
       <TouchableOpacity
         onPress={() => {
           const currentTime = new Date().getTime();
@@ -95,13 +101,18 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
           if (currentTime - lastPressTime < delay) {
             handleNotify(userId)
           } else {
-            navigation.navigate('UserProfile', { userId })
+            if(subscriptionPlan == "Basic"){
+              ShowToast("error", "Buy a subscription to view user details")
+            }else{
+
+              navigation.navigate('UserProfile', { userId })
+            }
           }
           console.log('userId', userId)
           setLastPressTime(currentTime);
         }}
 
-        activeOpacity={0.9} style={styles._card}>
+        activeOpacity={0.9} style={[styles._card, {position:'absolute'}]}>
         <FastImage
           style={{
             width: wp('90%'),
@@ -161,7 +172,7 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
         </View>
       </TouchableOpacity>
 
-      <View style={{ flexDirection: 'row', position: 'absolute', bottom: hp('-5%'), width: wp('50%'), alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center' }}>
+      <View style={{ flexDirection: 'row',  width: wp('50%'), alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center',   position:'absolute', top:hp('57%') }}>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
@@ -256,7 +267,6 @@ const styles = StyleSheet.create({
     height: hp('65%'),
     marginTop: -30,
     borderRadius: 30,
-    justifyContent: 'center',
     backgroundColor: 'gray',
     alignSelf: 'center',
     borderWidth: 1,

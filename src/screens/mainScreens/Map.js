@@ -1,5 +1,5 @@
 import React, {useEffect, useRef, useState} from 'react';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import {Image, Platform, Text, TouchableOpacity, View} from 'react-native';
 import MapView, {Marker} from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -17,6 +17,9 @@ const Map = ({navigation}) => {
   const myCountry = useSelector(state => state.user.user.country);
   const locationRef = useRef();
   const [stateChange, setStateChange] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
+
+
   useEffect(() => {
     Geolocation.getCurrentPosition(
       position => {
@@ -56,14 +59,17 @@ const Map = ({navigation}) => {
 
       <MapView
         onPress={handleMapPress}
+        onMapReady={() => setTimeout(() => setMapReady(true), 100)}
         ref={locationRef}
         style={{flex: 1}}
-        mapType="terrain"
+        mapType={Platform.OS == "android" ? "satellite" : "hybridFlyover"}
         region={currentRegion}>
         {FlagsData?.map((area, index) => (
           <Marker
             key={index}
+            provider="google"
             coordinate={{latitude: area?.latitude, longitude: area?.longitude}}
+            tracksViewChanges={!mapReady}
             onPress={() => {
               setStateChange(!stateChange);
               if (subscriptionPlan == 'Basic') {
@@ -86,7 +92,12 @@ const Map = ({navigation}) => {
               }
               console.log('area', area?.name);
             }}
-            icon={area?.images}
+
+
+              icon={Platform.OS == "android" ? area?.images  : null}
+              
+              image={Platform.OS == "ios" ? area?.images : null }
+
           />
         ))}
       </MapView>

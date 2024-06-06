@@ -47,7 +47,14 @@ const WhatULooking = ({ navigation }) => {
   }
   return (
     <ImageBackground source={require('../../assets/images/image4.png')}>
+      <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingHorizontal:10}}>
+
       <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 20, fontWeight: '700', color: 'white' }}>What You Are Looking For?</Text>
+      <TouchableOpacity onPress={()=> handleForm()}> 
+
+      <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 20, fontWeight: '700', color: 'white' }}>Skip</Text>
+      </TouchableOpacity>
+      </View>
 
       <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 80 }}>
         <View style={{ marginTop: 20 }}>

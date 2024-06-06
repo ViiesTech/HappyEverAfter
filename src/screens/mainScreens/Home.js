@@ -180,7 +180,7 @@ const Home = ({navigation, route}) => {
   const onSwipe = direction => {
     allUsers.pop();
     console.log('users', allUsers);
-    if (allUsers.length < 1) {
+    if (allUsers.length == 0) {
       setNoUsers(true);
       showToast('info', 'User List Finished');
     }
@@ -189,23 +189,18 @@ const Home = ({navigation, route}) => {
 
   return (
     <View style={{flex: 1}}>
-      {/* {
-                showModal ?
-                    ( */}
 
-      {/* ) : null
-            } */}
 
       <View
         style={{
           flex: 1,
           alignItems: 'center',
-          marginTop: hp('20%'),
+          marginTop: hp('15%'),
           zIndex: 150,
         }}>
         <View
           style={{
-            marginTop: -hp('15%'),
+            marginTop: -hp('12%'),
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -266,6 +261,7 @@ const Home = ({navigation, route}) => {
           </View>
         )}
         {allUsers.map((user, index) => {
+          console.log("user", user)
           return (
             <View key={index} style={{position: 'absolute', top: 0}}>
               <UserCard

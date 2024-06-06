@@ -17,7 +17,8 @@ const ChatScreen = ({ navigation, route }) => {
   const [chatId, setChatId] = useState(`${currentUser}_${selectedUser._id}`)
   // const selectedUser = userDetails._id;
   const UserData = useSelector(state => state.user.user);
-  console.log('currentUser', UserData)
+  console.log('selectedUser', selectedUser)
+  console.log('UserData', UserData)
   const [startChat, setStartChat] = useState()
   const [data, setData] = useState([]);
   const formatTime = (date) => {
@@ -60,15 +61,14 @@ const ChatScreen = ({ navigation, route }) => {
         Both_User_Data: [
           {
             name: UserData.name,
-            email: UserData.email,
-            _id: currentUser
+            _id: currentUser,
+            image:  `https://www.yourappdemo.com/happyeverafter/${UserData.image}`
 
           },
           {
             name: selectedUser.name,
-            email: 'harry@gmail.com',
-            _id: selectedUser._id
-
+            _id: selectedUser._id,
+            image : selectedUser.withSticker.uri
           }
         ],
         ID: [currentUser, selectedUser._id],

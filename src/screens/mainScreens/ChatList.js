@@ -4,155 +4,97 @@ import Plus from 'react-native-vector-icons/AntDesign'
 import SearchIcon from 'react-native-vector-icons/AntDesign'
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from 'react-redux';
+import moment from 'moment';
+import { ShowToast } from '../../globalFunctions/ShowToast';
 
 const Chat = ({ navigation }) => {
   const currentUserId = useSelector(state => state.user.user._id);
+  const subscriptionPlan = useSelector(state => state.user.subscriptionPlan);
+
   console.log('currentUserId', currentUserId)
   const chatsCollection = firestore().collection('chats')
   const userCollection = firestore().collection('Users')
   // console.log('current user',currentUser)
-  const [data, setData] = useState([
-     {
-       id: 1,
-       profilePic: require('../../assets/images/profile6.jpg'),
-       name: 'William Johnson',
-       text: 'Gather Together for',
-       time: 'Today',
-       totalMsgs: '4'
-     },
-     {
-       id: 2,
-       profilePic: require('../../assets/images/profile7.jpg'),
-       name: 'William Johnson',
-       text: 'Gather Together for',
-       time: 'Today',
-       totalMsgs: '5'
-     },
-     {
-       id: 3,
-       profilePic: require('../../assets/images/profile4.png'),
-       name: 'William Johnson',
-       text: 'Gather Together for',
-       time: 'Today',
-       totalMsgs: '5'
-     },
-     {
-       id: 4,
-       profilePic: require('../../assets/images/profile.png'),
-       name: 'William Johnson',
-       text: 'Gather Together for',
-       time: 'Today',
-       totalMsgs: '5'
-     },
-     {
-       id: 5,
-       profilePic: require('../../assets/images/profile6.jpg'),
-       name: 'William Johnson',
-       text: 'Gather Together for',
-       time: 'Today',
-       totalMsgs: '5'
-     },
-     {
-       id: 6,
-       profilePic: require('../../assets/images/profile7.jpg'),
-       name: 'William Johnson',
-       text: 'Gather Together for',
-       time: 'Today',
-       totalMsgs: '5'
-     },
-     {
-       id: 7,
-       profilePic: require('../../assets/images/profile.png'),
-       name: 'William Johnson',
-       text: 'Gather Together for',
-       time: 'Today',
-       totalMsgs: '5'
-     },
-  ]);
+  const [data, setData] = useState([]);
 
 
-  // useEffect(() => {
-  //   // const unsubscribe = navigation.addListener('focus', () => {
-  //   getAllChats();
-  //   // handleSearchTextChange('')
-  //   // });
-  //   // return unsubscribe;
-  // }, []);
+  useEffect(() => {
+    const sub = navigation.addListener('focus', () => {
+      FetchChatList()
+    })
+    return sub
+  }, [navigation])
 
+  const FetchChatList = () => {
+    firestore()
+      .collection("chats")
+      .where("ID", "array-contains", currentUserId)
+      .get()
+      .then((doc) => {
 
-  // const getAllChats = () => {
-  //   chatsCollection
-  //     .where('ID', 'array-contains', currentUserId)
-  //     .orderBy('lastMessageTime', 'desc')
-  //     .onSnapshot(snapshot => {
-  //       const chatsData = [];
-  //       snapshot?.forEach(eachChat => {
-  //         console.log('eachChat', eachChat)
-  //         const chatId = eachChat.data().ID.find(id => id === currentUserId); // Use find instead of filter
-  //         chatsData.push({
-  //           ...eachChat.data(),
-  //           chatId,
-  //         });
-  //       });
-  //       // console.log('chatsData',chatsData)
+        const temp = []
+        doc.docs.forEach((res) => {
+          temp.push(res.data())
+        })
 
-  //       Promise.all(
-  //         chatsData.map(async chat => {
-  //           console.log('chatId', chat.chatId)
-  //           const userSnapshot = await userCollection
-  //             .doc(chat.chatId)
-  //             .get();
+        setData(temp)
 
-  //           return {
-  //             ...userSnapshot.data(),
-  //             lastMessageText: chat.lastMessageText,
-  //             lastMessageTime: chat.lastMessageTime,
-  //           };
-  //         }),
-  //       )
-
-  //         .then(userData => {
-  //           setData(userData);
-  //           console.log('userData', userData)
-  //         })
-  //         .catch(error => {
-  //           console.error(error);
-  //         });
-  //     });
-
-  // };
+      })
+  }
 
 
 
   const renderItem = ({ item }) => {
-    console.log('item', item)
+    console.log('item', item.lastMessageTime)
+
+
+    const timestamp = item.lastMessageTime.seconds * 1000 + item.lastMessageTime.nanoseconds / 1000000;
+    const timeAgo = moment(timestamp).fromNow();
+
+    const filterMyData = item.Both_User_Data.filter((res) => {
+      return res._id != currentUserId
+    })
+
+
+    const userDetails = {
+      _id: filterMyData[0]._id,
+      name: filterMyData[0].name,
+      email: filterMyData[0].email,
+      image: filterMyData[0].image
+    }
+    console.log("filtered Data", filterMyData)
     return (
       <View style={{ flex: 1 }}>
         <TouchableOpacity
-          // onPress={() => {
-          //   // console.log('item', item)
-          //   navigation.navigate('ChatScreen', { _id: item._id })
-          // }}
+          onPress={() => {
+            // console.log('item', item)
+            if(subscriptionPlan == "Basic"){
+              ShowToast('error', "Buy a subscription to start a chat")
+            }else{
+
+              navigation.navigate('ChatScreen', { userDetails: userDetails })
+            }
+          }}
           style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', padding: 10 }}>
 
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: 10 }}>
             <View>
-              <Image source={item.profilePic} style={{ height: 60, width: 60, borderRadius: 30 }} />
+              <Image source={{uri: filterMyData[0].image}} style={{ height: 60, width: 60, borderRadius: 30 }} />
             </View>
             <View>
-              <Text style={{ color: 'black', fontSize: 18, fontWeight: '600' }}>{item.name}</Text>
-              <Text style={{ fontSize: 16, color: 'gray', fontWeight: 'bold' }}>{item.text}</Text>
+              <Text style={{ color: 'black', fontSize: 18, fontWeight: '600' }}>{filterMyData[0].name}</Text>
+              <Text style={{ fontSize: 16, color: 'gray', fontWeight: 'bold' }}>{item.lastMessageText}</Text>
             </View>
           </View>
           <View style={{ alignItems: 'center', gap: 5 }}>
-            <Text style={{ color: 'gray' }}>
-              {item.time}
-            </Text>
-            <View style={{ backgroundColor: 'limegreen', height: 22, width: 22, borderRadius: 11, justifyContent: 'center', alignItems: 'center' }}>
+            {/* <View style={{ backgroundColor: 'limegreen', height: 22, width: 22, borderRadius: 11, justifyContent: 'center', alignItems: 'center' }}>
               <Text style={{ color: 'white' }}>
                 1
               </Text>
-            </View>
+            </View> */}
+            <Text style={{ color: 'gray', marginTop: 27 }}>
+              {timeAgo}
+            </Text>
           </View>
 
         </TouchableOpacity>
@@ -166,9 +108,9 @@ const Chat = ({ navigation }) => {
     <View style={{ flex: 1 }}>
       <View style={{ flexDirection: 'row', padding: 20, alignItems: 'center', justifyContent: 'center' }}>
         <Text style={{ color: 'black', fontSize: 22, fontWeight: 600 }}>Chats</Text>
-        <TouchableOpacity onPress={() => navigation.navigate('ChatScreen')} style={{ position: 'absolute', right: 10 }}>
+        {/* <TouchableOpacity onPress={() => navigation.navigate('ChatScreen')} style={{ position: 'absolute', right: 10 }}>
           <Plus name='plus' color='blue' size={30} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
       <View>
         <TouchableOpacity style={{ position: 'absolute', justifyContent: 'center', top: 15, left: 20, zIndex: 10, paddingLeft: 10 }}>

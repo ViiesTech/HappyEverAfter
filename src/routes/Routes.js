@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import messaging from '@react-native-firebase/messaging';
 import BottomStack from './BottomStack';
 import Notifications from '../screens/mainScreens/Notifications';
+import UserProfile from '../screens/mainScreens/UserProfile';
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +24,7 @@ const Routes = () => {
                         <Stack.Screen name="MainStack" component={MainStack} />
                         <Stack.Screen name="BottomStack" component={BottomStack} />
                         <Stack.Screen name="Notifications" component={Notifications} />
+
                     </>
                 ) : (
                     <Stack.Screen name="AuthStack" component={AuthStack} />
