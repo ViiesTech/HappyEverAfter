@@ -13,6 +13,7 @@ const ChatScreen = ({ navigation, route }) => {
   const [messageValue, setMessageValue] = useState('');
   const userDetails = route?.params?.userDetails;
   const selectedUser = route?.params?.userDetails
+
   const currentUser = useSelector(state => state.user.user._id);
   const [chatId, setChatId] = useState(`${currentUser}_${selectedUser._id}`)
   // const selectedUser = userDetails._id;
@@ -197,11 +198,11 @@ const ChatScreen = ({ navigation, route }) => {
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <AntDesign name='arrowleft' size={25} color={'white'} />
           </TouchableOpacity>
-          {/* <View>
-            <Image style={{ height: 35, width: 35, borderRadius: 17.5 }} source={{ uri: userDetails.withSticker.uri }} />
-          </View> */}
-          <View>
-            {/* <Text style={{ color: 'white', fontWeight: '700', fontSize: 16 }}>{userDetails.name}</Text> */}
+          <View style={{marginLeft:10}}>
+            <Image style={{ height: 35, width: 35, borderRadius: 17.5 }} source={{ uri: userDetails.image ? userDetails.image : selectedUser.withSticker.uri }} />
+          </View>
+          <View style={{marginLeft:10}}>
+            <Text style={{ color: 'white', fontWeight: '700', fontSize: 16 }}>{userDetails.name}</Text>
             <Text style={{ color: 'white' }}>Online</Text>
           </View>
         </View>

@@ -7,7 +7,7 @@ import { Colors } from '../../Components/styles';
 
 const UserProfile = ({ navigation, route }) => {
     console.log('routes', route.params.userId)
-    const userDetails = route.params.userId
+    const userDetails = route.params.userDetails
     console.log('details', userDetails);
 
     

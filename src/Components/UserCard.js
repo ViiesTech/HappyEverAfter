@@ -8,6 +8,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import FastImage from 'react-native-fast-image';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
 import axios from 'axios';
 import { useSelector } from 'react-redux';
@@ -104,8 +105,7 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
             if(subscriptionPlan == "Basic"){
               ShowToast("error", "Buy a subscription to view user details")
             }else{
-
-              navigation.navigate('UserProfile', { userId })
+              navigation.navigate('UserProfile', {userDetails: userId })
             }
           }
           console.log('userId', userId)
@@ -152,6 +152,11 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
               borderRadius: 30,
             }}
           />
+          <TouchableOpacity onPress={()=>{
+           navigation.navigate('ChatScreen', {userDetails:userId})
+          }} style={{position:'absolute',right:20,top:10,height:50,width:50,justifyContent:'center',alignItems:'center',backgroundColor:'black',borderRadius:25}}>
+           <Ionicons color={'white'} size={25} name='chatbubble-ellipses-outline'/>
+          </TouchableOpacity>
           <View style={{ alignSelf: 'center', marginBottom: 30 }}>
             <View style={{ width: wp('70%'), justifyContent: 'space-between', flexDirection: 'row', alignItems: 'center' }}>
               <View>
