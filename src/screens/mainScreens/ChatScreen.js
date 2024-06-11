@@ -45,8 +45,8 @@ const ChatScreen = ({ navigation, route }) => {
   };
 
   let randomId = generateRandomId(24);
-  console.log('random id', randomId);
-  // const chatId = currentUser + '_' + selectedUser;
+
+
   const handleStartChat = () => {
     usersCollection
       // .collection('chats')
