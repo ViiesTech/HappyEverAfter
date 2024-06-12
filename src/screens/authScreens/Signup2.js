@@ -31,6 +31,8 @@ const SignUp2 = ({ route, navigation }) => {
     const [open2, setOpen2] = useState(false)
     const [scrollEnabled, setScrollEnabled] = useState(true);
     const [profileImage, setProfileImage] = useState()
+    console.log(date)
+
     const data = [1]
     const [countries, setCountries] = useState([
         {

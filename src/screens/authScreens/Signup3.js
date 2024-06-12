@@ -22,7 +22,7 @@ const Signup3 = ({ route, navigation }) => {
     const [mySelected, setMySelected] = useState([]);
     const [isLoading, setisLoading] = useState(false);
     const [fcmToken, setFcmToken] = useState()
-
+   
     useEffect(() => {
         const checkToken = async () => {
             const fcmToken = await messaging().getToken();
@@ -48,6 +48,11 @@ const Signup3 = ({ route, navigation }) => {
         pic: route.params.userData.pic ? JSON.parse(route.params.userData.pic) : null,
         dob: route.params.userData.dob ? new Date(JSON.parse(route.params.userData.dob)) : null,
     };
+    const dateOfBirthString = JSON.stringify(userData?.dob); // Assuming userData?.dob is a Date object or a string in ISO format
+    const dateOfBirth = JSON.parse(dateOfBirthString); // Convert the JSON string back to a JavaScript object
+    const formattedDateTime = dateOfBirth.split("T")[0]; // Extract the date part
+    
+    console.log('dob', formattedDateTime);
     const HandleSignUp = async () => {
         // console.log('parsed user data', userData)
         setisLoading(true)
@@ -55,7 +60,7 @@ const Signup3 = ({ route, navigation }) => {
         data.append('name', userData.name);
         data.append('email', userData.email);
         data.append('password', userData.password);
-        data.append('dob', JSON.stringify(userData.dob));
+        data.append('dob', JSON.stringify(formattedDateTime));
         data.append('country', userData.country);
         data.append('phone', userData.phone);
         data.append('occupation', userData.occupation);
@@ -95,12 +100,12 @@ const Signup3 = ({ route, navigation }) => {
             axios.request(config)
                 .then(async (response) => {
                     setisLoading(false);
-                    console.log("response data", JSON.stringify(response.data.data));
+                    console.log("response data", JSON.stringify(response.data));
                     if (response.data.success) {
                         await userCollection.doc(response.data.data._id).set(response.data.data); // Corrected line
+                        showToast('success', 'Registration Successful');
+                        navigation.navigate('Login');
                     }
-                    showToast('success', 'Registration Successful');
-                    navigation.navigate('Login');
                 })
                 .catch((error) => {
                     setisLoading(false);

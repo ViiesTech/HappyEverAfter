@@ -45,9 +45,7 @@ const Profile = ({ navigation }) => {
       })
       .catch((error) => {
         setIsLoading(false)
-
         showToast('error', error)
-
         console.log(error);
       });
 

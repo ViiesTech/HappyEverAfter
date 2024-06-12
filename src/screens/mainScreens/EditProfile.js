@@ -104,7 +104,7 @@ const EditProfile = ({ navigation }) => {
         )
       }
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 15 }}>
-        <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
+        <TouchableOpacity onPress={() => navigation.navigate('BottomStack')}>
           <Text style={styles.buttonText}>Cancel</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={handleEditProfile}>

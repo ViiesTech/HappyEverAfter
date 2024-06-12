@@ -19,7 +19,6 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
   const userDetails = useSelector((state) => state.user.user);
   const subscriptionPlan = useSelector(state => state.user.subscriptionPlan)
 
-  console.log("subscriptionPlan", subscriptionPlan)
   const [like, setLike] = useState()
   const [lastPressTime, setLastPressTime] = useState(0);
   const cardRef = useRef(null);
@@ -44,7 +43,7 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
 
     axios.request(config)
       .then((response) => {
-        console.log(JSON.stringify(response.data));
+        console.log('response',JSON.stringify(response.data));
       })
       .catch((error) => {
         console.log(error);
@@ -153,7 +152,8 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
             }}
           />
           <TouchableOpacity onPress={()=>{
-           navigation.navigate('ChatScreen', {userDetails:userId})
+            subscriptionPlan == 'Premium' ?
+           navigation.navigate('ChatScreen', {userDetails:userId}) : ShowToast('error',`Buy Subscription To Chat With ${userId.name}`)
           }} style={{position:'absolute',right:20,top:10,height:50,width:50,justifyContent:'center',alignItems:'center',backgroundColor:'black',borderRadius:25}}>
            <Ionicons color={'white'} size={25} name='chatbubble-ellipses-outline'/>
           </TouchableOpacity>

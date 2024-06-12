@@ -28,16 +28,17 @@ const Home = ({navigation, route}) => {
   const userDetails = useSelector(state => state.user.user);
   const subscriptionPlan = useSelector(state => state.user.subscriptionPlan);
   const myCountry = userDetails.country;
-  console.log('subscriptionPlan', subscriptionPlan);
   const [isLoading, setIsLoading] = useState(false);
   const userId = userDetails._id;
   const [allUsers, setAllUsers] = useState([]);
   const [showNoUsers, setNoUsers] = useState(false);
   const [changeState, setChangeState] = useState(false);
 
+  console.log('data',route?.params)
+  console.log('allUsers',allUsers)
+
   useEffect(() => {
     const handleNotificationOpened = remoteMessage => {
-      console.log('app opened by clicking on notification', remoteMessage);
       setChangeState(!changeState);
       navigation.navigate('Notifications', {stateChange: changeState});
     };
@@ -48,7 +49,6 @@ const Home = ({navigation, route}) => {
       .getInitialNotification()
       .then(remoteMessage => {
         if (remoteMessage) {
-          console.log('app opened from quit state', remoteMessage);
           navigation.navigate('Notifications');
         }
       });
@@ -79,8 +79,9 @@ const Home = ({navigation, route}) => {
         if (subscriptionPlan == 'Basic') {
           const users = data.message
             .filter(area => area.country === myCountry)
+
             .map((area, index) => {
-              console.log('area', area);
+
               const imageUrl = `https://www.yourappdemo.com/happyeverafter/${area.image}`;
               const isLiked = checkLiked(area.isLike, userId);
               return {
@@ -95,7 +96,6 @@ const Home = ({navigation, route}) => {
             });
 
           setAllUsers(users);
-          console.log('filtered users', users);
           {
             users.length < 1
               ? showToast('info', `No Users In ${myCountry}`)
@@ -123,7 +123,6 @@ const Home = ({navigation, route}) => {
             })
             .filter(user => user !== null);
           setAllUsers(users);
-          console.log('filtered users', users);
           {
             users.length < 1
               ? showToast('info', `No Users In ${route.params?.country}`)
@@ -132,6 +131,7 @@ const Home = ({navigation, route}) => {
         } else {
           const data = response.data;
           data.message.map((area, index) => {
+
             const imageUrl = `https://www.yourappdemo.com/happyeverafter/${area.image}`;
             const isLiked = checkLiked(area.isLike, userId);
             setAllUsers(prevUsers => [
@@ -153,16 +153,13 @@ const Home = ({navigation, route}) => {
       })
       .catch(error => {
         setIsLoading(false);
-        console.log('error', error);
       });
   };
 
   useEffect(() => {
     setNoUsers(false);
-    console.log('params', route.params);
     setAllUsers([]);
     getAllUsers();
-    console.log('allusers', allUsers.length);
     // allUsers.length > 1 ? setModalVisible(true) : null
   }, [route.params?.stateChange]);
 
@@ -179,12 +176,10 @@ const Home = ({navigation, route}) => {
 
   const onSwipe = direction => {
     allUsers.pop();
-    console.log('users', allUsers);
     if (allUsers.length == 0) {
       setNoUsers(true);
       showToast('info', 'User List Finished');
     }
-    console.log('set user state', showNoUsers);
   };
 
   return (
@@ -237,7 +232,6 @@ const Home = ({navigation, route}) => {
         </View>
 
         {isLoading ? (
-          // console.log('hello')
           <View
             style={{
               height: '100%',
@@ -260,19 +254,18 @@ const Home = ({navigation, route}) => {
             </Text>
           </View>
         )}
-        {allUsers.map((user, index) => {
-          console.log("user", user)
-          return (
-            <View key={index} style={{position: 'absolute', top: 0}}>
-              <UserCard
-                navigation={navigation}
-                userId={user}
-                onSwipe={onSwipe}
-                cards={user}
-              />
-            </View>
-          );
-        })}
+        {allUsers.slice().reverse().map((user, index) => {
+  return (
+    <View key={index} style={{position: 'absolute', top: 0}}>
+      <UserCard
+        navigation={navigation}
+        userId={user}
+        onSwipe={onSwipe}
+        cards={user}
+      />
+    </View>
+  );
+})}
       </View>
     </View>
   );

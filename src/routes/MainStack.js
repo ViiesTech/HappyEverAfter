@@ -9,6 +9,7 @@ import messaging from '@react-native-firebase/messaging';
 import ChangePassword from '../screens/mainScreens/ChangePassword';
 import { useSelector } from 'react-redux';
 import UserProfile from '../screens/mainScreens/UserProfile';
+import PreferenceUsers from '../screens/mainScreens/PreferenceUsers';
 
 const Stack = createNativeStackNavigator();
 
@@ -20,28 +21,32 @@ const MainStack = ({ navigation }) => {
 
   return (
     <Stack.Navigator initialRouteName={'WhatULooking'} screenOptions={{ headerShown: false }}>
-      {formStatus == 0 ? (
-        <Stack.Screen name='WhatULooking' component={WhatULooking} />
-      ) : (
-        <>
-          {subscriptionPlan !== "Basic" ? (
-            <>
-              <Stack.Screen name='BottomStack' component={BottomStack} />
-              <Stack.Screen name='ChatScreen' component={ChatScreen} />
-              <Stack.Screen name='Subscription' component={Subscription} />
-              <Stack.Screen name='EditProfile' component={EditProfile} />
-              <Stack.Screen name='ChangePassword' component={ChangePassword} />
-              <Stack.Screen name='UserProfile' component={UserProfile} />
-            </>
+      
+          {subscriptionPlan === "Basic" ? (
+           <>
+           <Stack.Screen name='WhatULooking' component={WhatULooking} />
+           <Stack.Screen name='Subscription' component={Subscription} />
+           <Stack.Screen name='ChangePassword' component={ChangePassword} />
+           <Stack.Screen name='EditProfile' component={EditProfile} />
+           <Stack.Screen name='PreferenceUsers' component={PreferenceUsers} />
+
+
+           </>
           ) : (
-            <>
-            <Stack.Screen name='Subscription' component={Subscription} />
-            <Stack.Screen name='ChangePassword' component={ChangePassword} />
-            </>
-            
+         
+                <>
+        <Stack.Screen name='WhatULooking' component={WhatULooking} />
+
+                <Stack.Screen name='BottomStack' component={BottomStack} />
+                <Stack.Screen name='ChatScreen' component={ChatScreen} />
+                <Stack.Screen name='Subscription' component={Subscription} />
+                <Stack.Screen name='EditProfile' component={EditProfile} />
+                <Stack.Screen name='ChangePassword' component={ChangePassword} />
+                <Stack.Screen name='UserProfile' component={UserProfile} />
+                <Stack.Screen name='PreferenceUsers' component={PreferenceUsers} />
+              </>
           )}
-        </>
-      )}
+       
 
     </Stack.Navigator>
   );

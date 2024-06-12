@@ -28,12 +28,8 @@ export const UserLogin = createAsyncThunk(
                 showToast('success', 'Login Successful');
                 return response.data;
             } else {
-                console.log('else')
-
                 showToast('error', response.data.message);
-                // return response.data;
                 return rejectWithValue(response.data);
-
             }
 
         } catch (error) {
@@ -77,7 +73,7 @@ export const authSlice = createSlice({
                 state.error = null;
             })
             .addCase(UserLogin.fulfilled, (state, action) => {
-                console.log("action.payload", action.payload.data.subscriptionStatus)
+                console.log("action.payload", action.payload)
                 state.isLoading = false; // Set isLoading to false when login is successful
                 state.token = action.payload.data.token;
                 state.user = action.payload.data;

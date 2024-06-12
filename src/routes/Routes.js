@@ -8,6 +8,7 @@ import messaging from '@react-native-firebase/messaging';
 import BottomStack from './BottomStack';
 import Notifications from '../screens/mainScreens/Notifications';
 import UserProfile from '../screens/mainScreens/UserProfile';
+import PreferenceUsers from '../screens/mainScreens/PreferenceUsers';
 
 const Stack = createNativeStackNavigator();
 
