@@ -2,15 +2,10 @@ import { View, Text, TextInput, ScrollView, TouchableOpacity, StyleSheet, ImageB
 import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
-import axios from 'axios'
-import { useSelector, useDispatch } from 'react-redux'
-import { baseUrl } from '../../assets/Utils/BaseUrl'
-import { formStatus } from '../../redux/Slices'
+import { ShowToast } from '../../globalFunctions/ShowToast'
 
 const WhatULooking = ({ navigation }) => {
-  const userToken = useSelector(state => state.user.token)
   const [loading, setIsLoading] = useState(false)
-  const dispatch = useDispatch()
   const [form, setForm] = useState({
     gender: '',
     age: '',
@@ -26,8 +21,11 @@ const WhatULooking = ({ navigation }) => {
   const {gender,age,interest,occupation} = form
   
   const handleForm = () => {
+    if(!form.gender,!form.age,!form.interest,!form.occupation){
+      return ShowToast('error','Plz Fill Out The Required Fields To Proceed')
+    }
     navigation.navigate('PreferenceUsers', {
-      data: {
+      userData: {
         gender,
         occupation,
         interest,
@@ -39,7 +37,7 @@ const WhatULooking = ({ navigation }) => {
       <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingHorizontal:10}}>
 
       <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 20, fontWeight: '700', color: 'white' }}>What You Are Looking For?</Text>
-      <TouchableOpacity onPress={()=> navigation.navigate('BottomStack')}> 
+      <TouchableOpacity onPress={()=> navigation.goBack()}> 
 
       <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 20, fontWeight: '700', color: 'white' }}>Skip</Text>
       </TouchableOpacity>

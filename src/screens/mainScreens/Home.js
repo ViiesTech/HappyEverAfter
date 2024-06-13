@@ -14,6 +14,7 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
 import io from 'socket.io-client';
@@ -147,7 +148,7 @@ const Home = ({navigation, route}) => {
                 isLiked: isLiked,
                 country: area?.country,
               },
-            ]);
+          ]);
           });
         }
       })
@@ -225,10 +226,17 @@ const Home = ({navigation, route}) => {
               Discover
             </Text>
           </View>
+          <View style={{flexDirection:'row',gap:15,alignItems:'center'}}>
           <TouchableOpacity
-            onPress={() => navigation.navigate('Notifications')}>
-            <EvilIcons name={'bell'} color={'black'} size={30} />
+            onPress={() => subscriptionPlan === 'Premium' ?  navigation.navigate('WhatULooking'):  ShowToast('error','Buy A Subscription To Search For A User')}
+            >
+            <Ionicons name={'search'} color={'black'} size={30} />
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Notifications')} >
+            <EvilIcons name={'bell'} color={'black'} size={35} />
+          </TouchableOpacity>
+          </View>
         </View>
 
         {isLoading ? (
