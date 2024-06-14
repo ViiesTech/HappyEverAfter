@@ -28,6 +28,8 @@ const MainStack = ({navigation}) => {
           <Stack.Screen name="Subscription" component={Subscription} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
+          <Stack.Screen name="BottomStack" component={BottomStack} />
+
         </>
       ) : (
         <>

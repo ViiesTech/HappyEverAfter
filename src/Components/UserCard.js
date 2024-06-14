@@ -93,7 +93,6 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
       }}
       ref={cardRef}
     >
-
       <TouchableOpacity
         onPress={() => {
           const currentTime = new Date().getTime();
@@ -175,9 +174,7 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
             </View>
           </View>
         </View>
-      </TouchableOpacity>
-
-      <View style={{ flexDirection: 'row',  width: wp('50%'), alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center',   position:'absolute', top:hp('57%') }}>
+       <View style={{ flexDirection: 'row',  width: wp('50%'), alignSelf: 'center', justifyContent: 'space-between', alignItems: 'center',bottom:30  }}>
         <TouchableOpacity
           activeOpacity={0.7}
           onPress={() => {
@@ -221,6 +218,9 @@ const UserCard = ({ navigation, onSwipe, cards, userId, userData }) => {
           />
         </TouchableOpacity>
       </View>
+      
+      </TouchableOpacity>
+      
     </TinderCard>
   );
 };
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
   _card: {
     width: wp('90%'),
     height: hp('65%'),
-    marginTop: -30,
+    marginTop: 30,
     borderRadius: 30,
     backgroundColor: 'gray',
     alignSelf: 'center',

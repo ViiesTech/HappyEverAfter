@@ -51,8 +51,8 @@ const Map = ({navigation}) => {
         }}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
-          style={{height: 22, width: 30, marginHorizontal: 20, marginTop: 10}}>
-          <AntDesign color={'black'} size={25} name="arrowleft" />
+          style={{height: 40, width: 40, marginHorizontal: 20,borderRadius:20, marginTop: 20,backgroundColor:'black',justifyContent:'center',alignItems:'center'}}>
+          <AntDesign color={'white'} size={25} name="arrowleft" />
           {/* <Image source={require(FlagsData[0].images)} /> */}
         </TouchableOpacity>
       </View>

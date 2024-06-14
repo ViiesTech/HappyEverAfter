@@ -14,6 +14,8 @@ import {
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
@@ -35,8 +37,8 @@ const Home = ({navigation, route}) => {
   const [showNoUsers, setNoUsers] = useState(false);
   const [changeState, setChangeState] = useState(false);
 
-  console.log('data',route?.params)
-  console.log('allUsers',allUsers)
+  console.log('data', route?.params);
+  console.log('allUsers', allUsers);
 
   useEffect(() => {
     const handleNotificationOpened = remoteMessage => {
@@ -82,7 +84,6 @@ const Home = ({navigation, route}) => {
             .filter(area => area.country === myCountry)
 
             .map((area, index) => {
-
               const imageUrl = `https://www.yourappdemo.com/happyeverafter/${area.image}`;
               const isLiked = checkLiked(area.isLike, userId);
               return {
@@ -132,7 +133,6 @@ const Home = ({navigation, route}) => {
         } else {
           const data = response.data;
           data.message.map((area, index) => {
-
             const imageUrl = `https://www.yourappdemo.com/happyeverafter/${area.image}`;
             const isLiked = checkLiked(area.isLike, userId);
             setAllUsers(prevUsers => [
@@ -148,7 +148,7 @@ const Home = ({navigation, route}) => {
                 isLiked: isLiked,
                 country: area?.country,
               },
-          ]);
+            ]);
           });
         }
       })
@@ -184,23 +184,22 @@ const Home = ({navigation, route}) => {
   };
 
   return (
-    <View style={{flex: 1}}>
-
-
+    <View style={{flex: 1,padding:20}}>
       <View
+
         style={{
           flex: 1,
           alignItems: 'center',
-          marginTop: hp('15%'),
+          // marginTop: hp('15%'),
           zIndex: 150,
         }}>
         <View
           style={{
-            marginTop: -hp('12%'),
+            // marginTop: -hp('12%'),
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            width: '90%',
+            width: '100%',
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
@@ -226,16 +225,42 @@ const Home = ({navigation, route}) => {
               Discover
             </Text>
           </View>
-          <View style={{flexDirection:'row',gap:15}}>
-          <TouchableOpacity
-            onPress={() => subscriptionPlan === 'Premium' ?  navigation.navigate('WhatULooking'):  ShowToast('error','Buy A Subscription To Search For A User')}
-            >
-            <Ionicons name={'search'} color={'black'} size={30} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Notifications')} >
-            <EvilIcons name={'bell'} color={'black'} size={35} />
-          </TouchableOpacity>
+          <View style={{flexDirection: 'row', gap: 15}}>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'black',
+                height: 40,
+                width: 40,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() =>
+                subscriptionPlan === 'Premium'
+                  ? navigation.navigate('WhatULooking')
+                  : ShowToast(
+                      'error',
+                      'Buy A Subscription To Search For A User',
+                    )
+              }>
+              <Ionicons name={'search'} color={'white'} size={25} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                backgroundColor: 'black',
+                height: 40,
+                width: 40,
+                borderRadius: 20,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              onPress={() => navigation.navigate('Notifications')}>
+              <MaterialCommunityIcons
+                name={'bell-outline'}
+                color={'white'}
+                size={25}
+              />
+            </TouchableOpacity>
           </View>
         </View>
 
@@ -262,18 +287,21 @@ const Home = ({navigation, route}) => {
             </Text>
           </View>
         )}
-        {allUsers.slice().reverse().map((user, index) => {
-  return (
-    <View key={index} style={{position: 'absolute', top: 0}}>
-      <UserCard
-        navigation={navigation}
-        userId={user}
-        onSwipe={onSwipe}
-        cards={user}
-      />
-    </View>
-  );
-})}
+        {allUsers
+          .slice()
+          .reverse()
+          .map((user, index) => {
+            return (
+              <View key={index} style={{}}>
+                <UserCard
+                  navigation={navigation}
+                  userId={user}
+                  onSwipe={onSwipe}
+                  cards={user}
+                />
+              </View>
+            );
+          })}
       </View>
     </View>
   );

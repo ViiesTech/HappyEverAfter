@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
 import React, { useState } from 'react'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 import axios from 'axios'
@@ -68,26 +68,26 @@ const ChangePassword = ({ navigation }) => {
 
     }
     return (
-        <View style={{ padding: 20 }}>
+        <ScrollView contentContainerStyle={{ padding: 20 }}>
             <TouchableOpacity style={{ height: 20, width: 20 }} onPress={() => navigation.goBack()}>
                 <AntDesign size={25} color={'black'} name='arrowleft' />
             </TouchableOpacity>
             <Text style={{ fontSize: 18, color: 'black', marginTop: 20 }}>Change Password</Text>
 
-            <View style={{ marginTop: 50, gap: 10 }}>
+            <View style={{ marginTop: 50, }}>
                 <View>
                     <Text>Current Password</Text>
-                    <TextInput onChangeText={changedText => onChangeText(changedText, 'currPass')} secureTextEntry={true} placeholder='● ● ● ● ● ● ●' style={{ borderBottomWidth: 1, borderColor: 'grey' }} />
+                    <TextInput onChangeText={changedText => onChangeText(changedText, 'currPass')} secureTextEntry={true} placeholder='● ● ● ● ● ● ●' style={{ borderBottomWidth: 1, borderColor: 'grey' ,marginTop:10}} />
                 </View>
 
-                <View>
+                <View style={{marginTop:20}}>
                     <Text>New Password</Text>
-                    <TextInput onChangeText={changedText => onChangeText(changedText, 'newPass')} secureTextEntry={true} placeholder='● ● ● ● ● ● ●' style={{ borderBottomWidth: 1, borderColor: 'grey' }} />
+                    <TextInput onChangeText={changedText => onChangeText(changedText, 'newPass')} secureTextEntry={true} placeholder='● ● ● ● ● ● ●' style={{ borderBottomWidth: 1, borderColor: 'grey',marginTop:10 }} />
                 </View>
 
-                <View>
+                <View style={{marginTop:20}}>
                     <Text>Confirm New Password</Text>
-                    <TextInput onChangeText={changedText => onChangeText(changedText, 'confirmNewPass')} secureTextEntry={true} placeholder='● ● ● ● ● ● ●' style={{ borderBottomWidth: 1, borderColor: 'grey' }} />
+                    <TextInput onChangeText={changedText => onChangeText(changedText, 'confirmNewPass')} secureTextEntry={true} placeholder='● ● ● ● ● ● ●' style={{ borderBottomWidth: 1, borderColor: 'grey' ,marginTop:10}} />
                 </View>
 
             </View>
@@ -103,7 +103,7 @@ const ChangePassword = ({ navigation }) => {
                 }
 
             </TouchableOpacity>
-        </View>
+        </ScrollView>
     )
 }
 

@@ -69,23 +69,21 @@ const PreferenceUsers = ({navigation, route}) => {
     getUsers();
   }, []);
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1,padding:20}}>
 
 
       <View
         style={{
           flex: 1,
           alignItems: 'center',
-          marginTop: hp('15%'),
           zIndex: 150,
         }}>
         <View
           style={{
-            marginTop: -hp('12%'),
             flexDirection: 'row',
             alignItems: 'center',
             justifyContent: 'space-between',
-            width: '90%',
+            width: '100%',
           }}>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
             <Image
@@ -128,7 +126,7 @@ const PreferenceUsers = ({navigation, route}) => {
             <ActivityIndicator size={'25'} />
           </View>
         ) : null}
-        {noUsers === true && (
+        {/* {noUsers === true && (
           <View
             style={{
               height: '100%',
@@ -139,7 +137,7 @@ const PreferenceUsers = ({navigation, route}) => {
              No Users Of Your Desired Category
             </Text>
           </View>
-        )} 
+        )}  */}
         {listFinished && (
           <View
             style={{
@@ -154,7 +152,7 @@ const PreferenceUsers = ({navigation, route}) => {
         )} 
         {allUsers.slice().reverse().map((user, index) => {
   return (
-    <View key={index} style={{position: 'absolute', top: 0}}>
+    <View key={index} style={{}}>
       <UserCard
         navigation={navigation}
         userId={user}
