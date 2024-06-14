@@ -50,7 +50,7 @@ const SignUp = ({ navigation }) => {
 
 
     return (
-        <ImageBackground style={{ flex: 1 }} source={require('../../assets/images/login.png')}>
+        <ImageBackground style={{ flex: 1 }} source={Images.login}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <StyledContainer>
 

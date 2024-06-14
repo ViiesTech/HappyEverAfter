@@ -226,7 +226,7 @@ const Home = ({navigation, route}) => {
               Discover
             </Text>
           </View>
-          <View style={{flexDirection:'row',gap:15,alignItems:'center'}}>
+          <View style={{flexDirection:'row',gap:15}}>
           <TouchableOpacity
             onPress={() => subscriptionPlan === 'Premium' ?  navigation.navigate('WhatULooking'):  ShowToast('error','Buy A Subscription To Search For A User')}
             >

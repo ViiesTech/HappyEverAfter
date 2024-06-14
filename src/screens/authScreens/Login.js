@@ -8,6 +8,7 @@ import { UserLogin, makeLoadingFalse } from '../../redux/Slices';
 import Toast from 'react-native-toast-message';
 import { baseUrl } from '../../assets/Utils/BaseUrl';
 import messaging from '@react-native-firebase/messaging';
+import { Images } from '../../assets/images/Appassets';
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch()
@@ -77,7 +78,7 @@ const Login = ({ navigation }) => {
   }
 
   return (
-    <ImageBackground style={{ flex: 1 }} source={require('../../assets/images/login.png')}  >
+    <ImageBackground style={{ flex: 1 }} source={Images.login}  >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ alignItems: 'center' }}>
           <View style={{ width: wp('90%'), height: hp('30%'), alignItems: 'center', justifyContent: 'center' }}>

@@ -3,27 +3,28 @@ import { StyleSheet, View, Text, ImageBackground, TouchableOpacity } from 'react
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { COLORS } from '../../Components/utils/constants';
 import LinearGradient from 'react-native-linear-gradient';
+import { Images } from '../../assets/images/Appassets';
 
 const slides = [
     {
         key: 1,
         title: 'The Beginning Of Forever.',
         text: 'Embark on a journey of love and connection as you navigate through our dating app. With each swipe, discover the potential for romance and meaningful connections.',
-        image: require('../../assets/images/slider1.png'),
+        image: Images.slider1,
         next: false
     },
     {
         key: 2,
         title: 'Discover your hearts desire with each slide, as love awaits just a swipe away.',
         text: 'Welcome to our dating app, where every swipe holds the promise of a new beginning. Explore endless possibilities as you connect with like-minded souls searching for love.',
-        image: require('../../assets/images/slider2.png'),
+        image: Images.slider2,
         next: false
     },
     {
         key: 3,
         title: 'Find love in every swipe - where every connection is a chance at romance.',
         text: "Enter a world of endless possibilities, where every swipe brings you closer to the romance you seek.",
-        image: require('../../assets/images/slider3.png'),
+        image: Images.slider3,
         next: true
     }
 ];

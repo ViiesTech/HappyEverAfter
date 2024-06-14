@@ -3,6 +3,7 @@ import React, { useState } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import { widthPercentageToDP } from 'react-native-responsive-screen'
 import { ShowToast } from '../../globalFunctions/ShowToast'
+import { Images } from '../../assets/images/Appassets'
 
 const WhatULooking = ({ navigation }) => {
   const [loading, setIsLoading] = useState(false)
@@ -33,7 +34,7 @@ const WhatULooking = ({ navigation }) => {
       }
     });  }
   return (
-    <ImageBackground source={require('../../assets/images/image4.png')} style={{flex:1}}>
+    <ImageBackground source={Images.image4} style={{flex:1}}>
       <View style={{flexDirection:'row', alignItems:'center', justifyContent:'space-between', paddingHorizontal:10}}>
 
       <Text style={{ marginTop: 20, textAlign: 'center', fontSize: 20, fontWeight: '700', color: 'white' }}>What You Are Looking For?</Text>

@@ -15,6 +15,7 @@ import DatePicker from 'react-native-date-picker'
 import ImagePicker from 'react-native-image-crop-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Toast from 'react-native-toast-message';
+import { Images } from '../../assets/images/Appassets';
 const SignUp2 = ({ route, navigation }) => {
     const { email, password } = route.params.userData;
     console.log('email,password', email, password)
@@ -225,7 +226,7 @@ const SignUp2 = ({ route, navigation }) => {
     }
     console.log('occupation', occupation)
     return (
-        <ImageBackground style={{ flex: 1 }} source={require('../../assets/images/login.png')}>
+        <ImageBackground style={{ flex: 1 }} source={Images.login}>
             {/* <ScrollView keyboardShouldPersistTaps='always' scrollEnabled={scrollEnabled} nestedScrollEnabled={true} contentContainerStyle={{ flexGrow: 1 }}>
               
             </ScrollView> */}
