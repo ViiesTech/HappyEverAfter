@@ -877,14 +877,14 @@ export const FlagsData = [
     {
         id: 126,
         name: "Lebanon",
-        images: require('../../assets/images/Lebanon.png'),
+        images: require('../../assets/images/lebanon.png'),
         latitude: 33.8547,
         longitude: 35.8623
     },
     {
         id: 127,
         name: "Lesotho",
-        images: require('../../assets/images/Lesotho.png'),
+        images: require('../../assets/images/lesotho.png'),
         latitude: -29.61,
         longitude: 28.2336
     },
@@ -926,7 +926,7 @@ export const FlagsData = [
     {
         id: 133,
         name: "Macau",
-        images: require('../../assets/images/Macau.png'),
+        images: require('../../assets/images/macau.png'),
         latitude: 22.1987,
         longitude: 113.5439
     },
@@ -947,7 +947,7 @@ export const FlagsData = [
     {
         id: 136,
         name: "Malawi",
-        images: require('../../assets/images/Malawi.png'),
+        images: require('../../assets/images/malawi.png'),
         latitude: -13.2543,
         longitude: 34.3015
     },
@@ -1108,7 +1108,7 @@ export const FlagsData = [
     {
         id: 159,
         name: "Netherlands-antilles",
-        images: require('../../assets/images/Netherlands-antilles.png'),
+        images: require('../../assets/images/netherlands-antilles.png'),
         latitude: 12.2261,
         longitude: -69.0601
     },
@@ -1444,7 +1444,7 @@ export const FlagsData = [
     {
         id: 208,
         name: "Slovenia",
-        images: require('../../assets/images/Slovenia.png'),
+        images: require('../../assets/images/slovenia.png'),
         latitude: 46.1512,
         longitude: 14.9955
     },
@@ -1493,7 +1493,7 @@ export const FlagsData = [
     {
         id: 215,
         name: "Spain",
-        images: require('../../assets/images/Spain.png'),
+        images: require('../../assets/images/spain.png'),
         latitude: 40.4637,
         longitude: -3.7492
     },
@@ -1668,7 +1668,7 @@ export const FlagsData = [
     {
         id: 241,
         name: "United-States-Virgin-Islands",
-        images: require('../../assets/images/United-States-Virgin-Islands.png'),
+        images: require('../../assets/images/united-states-virgin-islands.png'),
         latitude: 18.3358,
         longitude: -64.8963
     },
@@ -1717,7 +1717,7 @@ export const FlagsData = [
     {
         id: 248,
         name: "Wales",
-        images: require('../../assets/images/Wales.png'),
+        images: require('../../assets/images/wales.png'),
         latitude: 52.1307,
         longitude: -3.7837
     },
