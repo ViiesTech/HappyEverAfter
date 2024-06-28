@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
+import { ShowToast } from '../globalFunctions/ShowToast';
 const initialState = {
     user: [],
     token: '',
@@ -25,7 +26,8 @@ export const UserLogin = createAsyncThunk(
             console.log('response', response.data)
             // console.log('loading', state.isLoading)
             if (response.data.success == true) {
-                showToast('success', 'Login Successful');
+
+                // ShowToast('success', 'Login Successful');
                 return response.data;
             } else {
                 showToast('error', response.data.message);

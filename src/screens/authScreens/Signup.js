@@ -50,10 +50,9 @@ const SignUp = ({ navigation }) => {
 
 
     return (
-        <ImageBackground style={{ flex: 1 }} source={Images.login}>
+        <ImageBackground style={{ flex: 1 }} source={Images.signup1}>
             <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
                 <StyledContainer>
-
                     <HeaderContainer style={styles.headerContainer}>
                         <Text style={{ color: 'red', fontSize: 20, fontWeight: 'bold' }}>Sign up</Text>
                         <TextSmall style={{ color: 'white' }}>STEP 1/3</TextSmall>
@@ -72,27 +71,31 @@ const SignUp = ({ navigation }) => {
                             </TouchableOpacity>
                         </StyledButtonTouch>
                     </Card>
+                    <View style={{padding:20,width:'100%'}}>
                     <Card style={styles.input}>
-                        <TextLabel style={{ marginTop: 10, color: 'white', fontSize: 20, fontWeight: 'bold' }}>Email adress</TextLabel>
+                        <TextLabel style={{ marginTop: 10, color: 'black', fontSize: 18, fontWeight: '600' }}>Email adress</TextLabel>
                         <TextInput
-                            style={{ width: '100%', height: 35, border: 'none', backgroundColor: 'white', borderRadius: 10, padding: 15 }}
+                
+                style={{ width: '100%', height: 35, border: 'none',color:'gray', backgroundColor: 'white', borderRadius: 10, padding: 15,marginTop:10 }}
                             placeholder="Enter email address"
+                            placeholderTextColor={'gray'}
                             autoCapitalize='none'
                             keyboardType='email-address'
                             onChangeText={changedText => onChangeText(changedText, 'email')}
                         />
                     </Card>
                     <Card style={styles.input}>
-                        <TextLabel style={{ color: 'white', fontSize: 20, fontWeight: 'bold' }}>Password</TextLabel>
+                        <TextLabel style={{ color: 'black', fontSize: 18, fontWeight: '600' }}>Password</TextLabel>
                         <View style={{ width: '100%' }}>
                             <TextInput
                                 placeholder='password'
+                                placeholderTextColor={'gray'}
                                 secureTextEntry={passwordVisible}
                                 onChangeText={changedText =>
                                     onChangeText(changedText, 'password')
                                 }
-                                style={{ marginTop: 10, height: 35, border: 'none', backgroundColor: 'white', borderRadius: 10, padding: 15 }}
-
+                
+                style={{ marginTop: 10, height: 35,color:'gray', border: 'none', backgroundColor: 'white', borderRadius: 10, padding: 15 }}
                             />
                             <View style={{ position: 'absolute', right: 10, top: 5, height: '100%', alignSelf: 'center', alignContent: 'center', justifyContent: 'center' }}>
                                 {
@@ -112,6 +115,7 @@ const SignUp = ({ navigation }) => {
                             </View>
                         </View>
                     </Card>
+                    <View style={{alignItems:'center'}}>
                     <View style={styles.errorView}>
                         <View style={styles.error}>
                             <Text style={characterLength ? { color: 'white', fontSize: 18, fontWeight: 'bold' } : { color: 'red', fontSize: 18, fontWeight: 'bold' }}>+ 8 characters</Text>
@@ -121,6 +125,7 @@ const SignUp = ({ navigation }) => {
                             <Text style={includeNumber ? { color: 'white', fontSize: 18, fontWeight: 'bold' } : { color: 'red', fontSize: 18, fontWeight: 'bold' }}>+ 1 number</Text>
                             <Text style={{ color: 'red', fontSize: 16, fontWeight: 'bold' }}>* get our password</Text>
                         </View>
+                    </View>
                     </View>
                     <Card style={{ paddingTop: hp('5%') }}>
                         <StyledButtonTouch style={{ backgroundColor: 'transparent' }} onPress={() => {
@@ -143,6 +148,7 @@ const SignUp = ({ navigation }) => {
                         </StyledButtonTouch>
                     </Card>
                     <TextSmall style={{ color: 'white', fontSize: 17, fontWeight: 'bold' }} onPress={() => navigation.navigate('Login')}>Already have an account?<Text style={{ color: 'red', fontSize: 18, fontWeight: 'bold' }}>  Signin</Text></TextSmall>
+                    </View>
                 </StyledContainer>
             </ScrollView>
         </ImageBackground>

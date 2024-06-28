@@ -4,9 +4,8 @@ import {FlatList} from 'react-native';
 import {useSelector} from 'react-redux';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import axios from 'axios';
-import {baseUrl} from '../../assets/Utils/BaseUrl';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import { handleNotification } from '../../globalFunctions/Notifications';
 
 const Notifications = ({navigation, route}) => {
   const userDetails = useSelector(state => state.user.user);
@@ -16,39 +15,23 @@ const Notifications = ({navigation, route}) => {
 
   useEffect(() => {
     const sub = navigation.addListener('focus', () => {
-      getNoti();
+      getNotification();
     });
     return sub;
   }, [navigation]);
 
-  const getNoti = () => {
+  const getNotification = async () => {
     setLoading(true);
-    let config = {
-      method: 'get',
-      maxBodyLength: Infinity,
-      url: `${baseUrl}/user/notify-ifUser-like`,
-      headers: {
-        Authorization: `Bearer ${userDetails.token}`,
-      },
-    };
+    try{
+    const response = await handleNotification(userDetails.token)
+    setData(response)
+    setLoading(false);
 
-    axios
-      .request(config)
-      .then(response => {
-        setLoading(false);
-        console.log('response', JSON.stringify(response.data.data));
-        const responseData = response.data.data;
-        const newData = responseData.map(area => ({
-          id: area._id,
-          name: area.name,
-          ProfilePic: `https://www.yourappdemo.com/happyeverafter/${area.image}`,
-        }));
-        setData(newData); 
-      })
-      .catch(error => {
-        setLoading(false);
-        console.log(error);
-      });
+    }catch(error){
+
+      setLoading(false);
+
+    }
   };
 
   const renderItem = ({item}) => {

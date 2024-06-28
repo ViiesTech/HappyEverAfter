@@ -117,7 +117,7 @@ const Chat = ({ navigation }) => {
           <SearchIcon name='search1' size={20} color={'gray'} />
         </TouchableOpacity>
 
-        <TextInput style={{ height: 50, width: '90%', alignSelf: 'center', backgroundColor: 'lightgray', borderRadius: 5, paddingHorizontal: 40, padding: 10 }} placeholder='Search' />
+        <TextInput placeholderTextColor={'gray'} style={{ height: 50, width: '90%', alignSelf: 'center', backgroundColor: 'lightgray', borderRadius: 5,color:'gray', paddingHorizontal: 40, padding: 10 }} placeholder='Search' />
         <View style={{ marginTop: 20, height: 1, backgroundColor: 'lightgray', width: '100%' }}></View>
         <FlatList
           data={data}

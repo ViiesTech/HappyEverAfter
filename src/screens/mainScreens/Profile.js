@@ -73,7 +73,7 @@ const Profile = ({ navigation }) => {
               <Image style={{ height: 100, width: 100, borderRadius: 50, borderWidth: 1.5, borderColor: 'gray' }} source={{ uri: `https://www.yourappdemo.com/happyeverafter/${details.image}` }} />
             </View>
             <View>
-              <Text style={{ fontWeight: 'bold', fontSize: 25 }}>{details.name}</Text>
+              <Text style={{ fontWeight: 'bold', fontSize: 25,color: 'gray' }}>{details.name}</Text>
               <Text style={{ fontSize: 16, color: 'gray' }}>{details.occupation}</Text>
             </View>
           </TouchableOpacity>

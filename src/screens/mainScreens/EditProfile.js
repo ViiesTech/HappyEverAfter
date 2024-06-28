@@ -130,16 +130,16 @@ const EditProfile = ({ navigation }) => {
             />
           )}
 
-          <TouchableOpacity onPress={selectAnImage} style={{ position: 'absolute', bottom: 10, right: 15 }}>
-            <FeatherIcon name='edit-3' size={30} color={'black'} />
+          <TouchableOpacity onPress={selectAnImage} style={{ position: 'absolute',height:40,width:40,borderRadius:20,justifyContent:'center',alignItems:'center', bottom:0, right: 5,backgroundColor:'black' }}>
+            <FeatherIcon name='edit-3' size={20} color={'white'} />
           </TouchableOpacity>
         </TouchableOpacity>
       </View>
 
-      <View style={{ width: '100%', alignItems: 'center' }}>
+      <View style={{ width: '100%',padding:30 }}>
         <View style={{ marginTop: 30 }}>
-          <Text>Your Name</Text>
-          <TextInput onChangeText={changedText => onChangeText(changedText, 'name')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder={details.name}
+          <Text style={{color:'gray'}}>Your Name</Text>
+          <TextInput onChangeText={changedText => onChangeText(changedText, 'name')} style={{ height: 50,color:'gray', width: '100%', borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder={details.name}
             placeholderTextColor={'gray'}
           />
         </View>
@@ -147,15 +147,15 @@ const EditProfile = ({ navigation }) => {
 
 
         <View style={{ marginTop: 20 }}>
-          <Text>Your Phone</Text>
-          <TextInput onChangeText={changedText => onChangeText(changedText, 'phone')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }} placeholder={details.phone ? details.phone : '- - - - - - '}
+          <Text style={{color:'gray'}}>Your Phone</Text>
+          <TextInput onChangeText={changedText => onChangeText(changedText, 'phone')} style={{ height: 50, width: '100%', borderBottomWidth: 1, borderColor: 'lightgray',color:'gray' }} placeholder={details.phone ? details.phone : '- - - - - - '}
             placeholderTextColor={'gray'}
           />
         </View>
 
         <View style={{ marginTop: 20 }}>
-          <Text>Your Country</Text>
-          <TextInput onChangeText={changedText => onChangeText(changedText, 'country')} style={{ height: 50, width: 300, borderBottomWidth: 1, borderColor: 'lightgray' }}
+          <Text style={{color:'gray'}}>Your Country</Text>
+          <TextInput onChangeText={changedText => onChangeText(changedText, 'country')} style={{ height: 50,color:'gray', width: '100%', borderBottomWidth: 1, borderColor: 'lightgray' }}
             placeholder={details.country ? details.country : '- - - - - -'}
             placeholderTextColor={'gray'}
           />

@@ -36,7 +36,7 @@ export const InnerContainer = styled.View`
 export const Card = styled.View`
   align-items: center;
   justify-content: center;
-  width:90%;
+  width:100%;
 `;
 export const HeaderContainer = styled.View`
   flex-direction: row;
@@ -57,9 +57,8 @@ export const TextTitle = styled.Text`
   padding: 10px;
 `;
 export const TextLabel = styled.Text`
-  font-size: 16px;
-  color: ${'white'};
-  padding: 10px;
+  font-size: 18px;
+  color: ${'black'};
   width:100%;
 `;
 export const TextSmall = styled.Text`

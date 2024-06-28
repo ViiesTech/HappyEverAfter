@@ -7,23 +7,17 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import Modal from 'react-native-modal';
 import UserCard from '../../Components/UserCard';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {useSelector} from 'react-redux';
 import axios from 'axios';
-import io from 'socket.io-client';
 import Toast from 'react-native-toast-message';
 import {baseUrl} from '../../assets/Utils/BaseUrl';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import socketServices from '../../../socket/Socket_Service';
 import messaging from '@react-native-firebase/messaging';
 import {ShowToast} from '../../globalFunctions/ShowToast';
 
