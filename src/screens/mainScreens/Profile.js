@@ -15,7 +15,8 @@ const Profile = ({ navigation }) => {
   const dispatch = useDispatch()
   const [loading, setIsLoading] = useState(false)
   const details = useSelector(state => state.user.user)
-  console.log('details', details)
+  const subscriptionPlan = useSelector(state => state.user.subscriptionPlan)
+  console.log('subscriptionPlan', subscriptionPlan)
   const token = details.token
   console.log('token', details)
   const showToast = (type, message) => {
@@ -108,10 +109,22 @@ const Profile = ({ navigation }) => {
           <AntDesign name='setting' size={25} color={'blue'} />
           <Text style={{ color: '#00008B', fontSize: 16 }}>Change Password</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => navigation.navigate('Subscription')} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
-          <MaterialIcon name='upgrade' size={25} color={'blue'} />
-          <Text style={{ color: '#00008B', fontSize: 16 }}>Upgrade Package</Text>
-        </TouchableOpacity>
+        {
+          subscriptionPlan === 'Premium' ? 
+          (
+           <View  style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
+            <MaterialIcon name='upgrade' size={25} color={'blue'} />
+            <Text style={{ color: '#00008B', fontSize: 16 }}>{subscriptionPlan} Package Subscribed</Text>
+          </View>
+          ) : (
+           
+            <TouchableOpacity onPress={() => navigation.navigate('Subscription')} style={{ flexDirection: 'row', alignItems: 'center', gap: 20, marginTop: 25 }}>
+            <MaterialIcon name='upgrade' size={25} color={'blue'} />
+            <Text style={{ color: '#00008B', fontSize: 16 }}>Upgrade Package</Text>
+          </TouchableOpacity>
+          )
+        }
+      
         <View style={{ height: 1, width: '100%', marginVertical: 25, backgroundColor: 'gray' }}>
         </View>
         <TouchableOpacity

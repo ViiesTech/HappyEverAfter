@@ -10,6 +10,7 @@ import ChangePassword from '../screens/mainScreens/ChangePassword';
 import {useSelector} from 'react-redux';
 import UserProfile from '../screens/mainScreens/UserProfile';
 import PreferenceUsers from '../screens/mainScreens/PreferenceUsers';
+import Payment from '../screens/mainScreens/Payment';
 
 const Stack = createNativeStackNavigator();
 
@@ -26,6 +27,7 @@ const MainStack = ({navigation}) => {
       {subscriptionPlan === 'Basic' ? (
         <>
           <Stack.Screen name="Subscription" component={Subscription} />
+          <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="BottomStack" component={BottomStack} />
@@ -37,6 +39,7 @@ const MainStack = ({navigation}) => {
           <Stack.Screen name="BottomStack" component={BottomStack} />
           <Stack.Screen name="ChatScreen" component={ChatScreen} />
           <Stack.Screen name="Subscription" component={Subscription} />
+          <Stack.Screen name="Payment" component={Payment} />
           <Stack.Screen name="EditProfile" component={EditProfile} />
           <Stack.Screen name="ChangePassword" component={ChangePassword} />
           <Stack.Screen name="UserProfile" component={UserProfile} />

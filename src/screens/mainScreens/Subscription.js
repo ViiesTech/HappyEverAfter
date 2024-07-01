@@ -14,34 +14,22 @@ import {ShowToast} from '../../globalFunctions/ShowToast';
 import {setSubscription} from '../../redux/Slices';
 
 const Subscription = ({navigation}) => {
-  const [isLoading, setIsLoading] = useState(false);
   const [subscriptionPlan, setSubscriptionPlan] = useState();
-  const token = useSelector(state => state.user.token);
   const currentSubscriptionPlan = useSelector(
     state => state.user.subscriptionPlan,
   );
   console.log('subscription plan', currentSubscriptionPlan);
-  const dispatch = useDispatch();
-  const handleSubscription = async () => {
-    setIsLoading(true);
-    try {
+  const handleSubscription = () => {
       if (!subscriptionPlan) {
-        setIsLoading(false);
         ShowToast('error', 'Please Select Subscription Category');
         return;
-      } else if (subscriptionPlan == 'Basic') {
-        dispatch(setSubscription(subscriptionPlan));
-      } else {
-        const res = await BuySubscription(token, subscriptionPlan);
-        dispatch(setSubscription(subscriptionPlan));
-      }
 
-      navigation.navigate('BottomStack');
-      setIsLoading(false);
-    } catch (error) {
-      ShowToast('error', error.message);
-      setIsLoading(false);
-    }
+      }else if(subscriptionPlan === 'Basic'){
+        navigation.navigate('BottomStack')
+      }
+       else {
+        navigation.navigate('Payment',{subscriptionPlan:subscriptionPlan})
+      }
   };
   return (
     <ScrollView
@@ -178,13 +166,11 @@ const Subscription = ({navigation}) => {
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
             colors={['red', 'orange']}>
-            {isLoading ? (
-              <ActivityIndicator size={'large'} color={'white'} />
-            ) : (
+           
               <Text style={{color: 'white', fontSize: 20, fontWeight: 'bold'}}>
-                Subscribe
+                Continue
               </Text>
-            )}
+            
           </LinearGradient>
         </TouchableOpacity>
       </View>
