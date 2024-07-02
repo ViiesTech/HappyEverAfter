@@ -24,16 +24,19 @@ const PreferenceUsers = ({navigation, route}) => {
       ShowToast('info', 'User List Finished');
     }
   };
+  
   const checkLiked = (isLikeArray, userIdToCheck) => {
     return isLikeArray.includes(userIdToCheck);
   };
   const {gender, interest, occupation} = userData;
   console.log(noUsers)
   let age = Number(userData.age);
+const formattedOccupation =   occupation.charAt(0).toUpperCase() + occupation.slice(1);
+console.log(formattedOccupation)
   const getUsers = async () => {
     try {
       setIsLoading(true)
-      const res = await Searching(gender, interest, occupation, age, token);
+      const res = await Searching(gender, interest, formattedOccupation, age, token);
       setIsLoading(false) 
       if(res.length === 0){
      console.log('hello')

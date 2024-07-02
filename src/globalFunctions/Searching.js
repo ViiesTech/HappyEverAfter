@@ -4,7 +4,7 @@ import { baseUrl } from "../assets/Utils/BaseUrl";
 export const Searching = async (gender,interest,occupation,age,userToken) => {
   let data = JSON.stringify({
     gender: gender.toLowerCase(),
-    occupation: occupation.toLowerCase(),
+    occupation: occupation,
     interests: interest.toLowerCase(),
     age: age,
   });
