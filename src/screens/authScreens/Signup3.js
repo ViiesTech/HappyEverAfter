@@ -18,7 +18,7 @@ import {ActivityIndicator} from 'react-native';
 import messaging from '@react-native-firebase/messaging';
 import firestore from '@react-native-firebase/firestore';
 import {Registeration} from '../../globalFunctions/Auth';
-import { ShowToast } from '../../globalFunctions/ShowToast';
+import {ShowToast} from '../../globalFunctions/ShowToast';
 
 const Signup3 = ({route, navigation}) => {
   const userCollection = firestore().collection('Users');
@@ -54,6 +54,7 @@ const Signup3 = ({route, navigation}) => {
   console.log('dob', formattedDateTime);
   const HandleSignUp = async () => {
     setisLoading(true);
+  
     if (mySelected.length > 0) {
       try {
         const response = await Registeration(
@@ -62,27 +63,34 @@ const Signup3 = ({route, navigation}) => {
           fcmToken,
           mySelected,
         );
+        
         setisLoading(false);
-
+        console.log('response.data', response.data);
+        
         if (response.data.success) {
           await userCollection
             .doc(response.data.data._id)
             .set(response.data.data);
+          
           ShowToast('success', 'Registration Successful');
+          console.log('Navigating to Login');
+          
           navigation.navigate('Login');
-        }else{
-         return ShowToast('error', response.data.message);
+        } else {
+          ShowToast('error', response.data.message);
         }
       } catch (error) {
         setisLoading(false);
         ShowToast('error', error.message);
-        console.log(error);
+        console.error('Error during registration:', error);
       }
     } else {
       setisLoading(false);
-      return ShowToast('error', 'Plz Choose Your Interests');
+      ShowToast('error', 'Please Choose Your Interests');
     }
   };
+  
+ 
 
   const array = [
     {
@@ -204,7 +212,7 @@ const Signup3 = ({route, navigation}) => {
             style={{
               alignSelf: 'center',
               fontSize: 26,
-              color: black,             
+              color: black,
               marginRight: 30,
             }}>
             My interests
